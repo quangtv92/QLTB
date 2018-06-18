@@ -48,7 +48,7 @@ class AssetDistribution(models.Model):
     ], string="Allocate To", required=True, default='employee', readonly=True, states={'draft': [('readonly', False)]})
     employee_id = fields.Many2one('hr.employee', string="Employee", default=default_employee,
         readonly=True, states={'draft': [('readonly', False)]})
-    project_id = fields.Many2one('project.project', string="Project", domain=[('state','in',['draft','open'])], readonly=True, states={'draft': [('readonly', False)]})
+    project_id = fields.Many2one('project.project', string="Project", readonly=True, states={'draft': [('readonly', False)]})
     department_id = fields.Many2one('hr.department', string="Department", readonly=True, states={'draft': [('readonly', False)]})
     priority = fields.Selection([
         ('low', 'Low'),

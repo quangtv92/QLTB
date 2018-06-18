@@ -41,8 +41,8 @@
         					groups="base.group_user"
         					attrs="{'invisible': ['|',('state','in',['draft','done','cancel','reject']),'&amp;',('state','=','transfer_confirm'),('it_check','=',True)]}"/>
        					<button name="create_move" string="Generate Entry" type="object" class="oe_highlight"
-        					groups="account.group_account_user"
-        					attrs="{'invisible': ['|', ('state','!=','done'), ('move_id','!=',False)]}"/>
+        					groups="account.group_account_user" invisible="1"/>
+        					<!--attrs="{'invisible': ['|', ('state','!=','done'), ('move_id','!=',False)]}"/>-->
         				<button name="%(asset_distribution_create_transfer_action)d" string="Collect" type="action" class="oe_highlight"
         					context="{
         						'default_own_by': own_by,
