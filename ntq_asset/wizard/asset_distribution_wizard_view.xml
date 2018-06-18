@@ -56,7 +56,7 @@
 								<field name="partner_id" class="oe_inline"
 									attrs="{'invisible': [('own_by','!=','customer')], 'required': [('own_by','=','customer')]}" />
 							</div>
-							<field name="it_check" />
+							<field name="it_check" invisible="1"/>
 							<field name="assign_to"
 								attrs="{'invisible': [('it_check','=',False)], 'required': [('it_check','=',True)]}" />
 						</group>
@@ -115,7 +115,7 @@
 								<field name="partner_id" class="oe_inline"
 									attrs="{'invisible': [('own_by','!=','customer')], 'required': [('own_by','=','customer')]}" />
 							</div>
-							<field name="it_check" />
+							<field name="it_check" invisible="1"/>
 							<field name="assign_to"
 								attrs="{'invisible': [('it_check','=',False)], 'required': [('it_check','=',True)]}" />
 						</group>

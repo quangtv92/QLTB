@@ -136,9 +136,10 @@ class Asset(models.Model):
     @api.constrains('asset_code')
     def _check_asset_code_constrains(self):
         asset_obj = self.env['product.template']
-        duplicated_code = asset_obj.search([('asset_code', '=', self.asset_code)])
-        if len(duplicated_code) > 1:
-            raise ValidationError(_("Asset code must be unique!."))
+        if self.asset_code:
+            duplicated_code = asset_obj.search([('asset_code', '=', self.asset_code)])
+            if len(duplicated_code) > 1:
+                raise ValidationError(_("Asset code must be unique!."))
 
     @api.onchange('purchase_order_id')
     def onchange_purchase_order(self):
@@ -249,6 +250,8 @@ class Asset(models.Model):
     def create(self, vals):
         if vals['is_asset'] == False:
             vals['asset_code'] = ""
+        else:
+            vals['asset_code'] = self.env['ir.sequence'].next_by_code('asset.asset') or '/'
         res = super(Asset, self).create(vals)
         return res
 
@@ -256,5 +259,7 @@ class Asset(models.Model):
     def write(self, vals):
         if 'is_asset' in vals and vals['is_asset'] == False:
             vals['asset_code'] = ""
+        else:
+            vals['asset_code'] = self.env['ir.sequence'].next_by_code('asset.asset') or '/'
         res = super(Asset, self).write(vals)
         return res
