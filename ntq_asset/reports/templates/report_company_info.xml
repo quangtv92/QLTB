@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="ntq_report_asset_company_info">
+			<div class="col-xs-8">
+				<p>
+					<strong>Tên công ty:</strong>
+					<span t-esc="res_company.name" />
+					<br />
+					<strong>Địa chỉ:</strong>
+					<span t-esc="res_company.street" />,
+					<t t-if="res_company.street2 and res_company.street2 != ''">
+						<span t-esc="res_company.street2" />,
+					</t>
+					<t t-if="res_company.city and res_company.city != ''">
+						<span t-esc="res_company.city" />,
+						<span t-esc="res_company.state_id.name" />,
+					</t>
+					<t t-if="not res_company.city or res_company.city == ''">
+						<span t-esc="res_company.state_id.name" />,
+					</t>
+					<span t-esc="res_company.country_id.name" />
+				</p>
+			</div>
+		</template>
+	</data>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<report 
+            id="asset_transfer_report" 
+            model="asset.transfer" 
+            string="Transfer Asset"
+            report_type="qweb-pdf"
+            name="ntq_asset.report_assettransfer" 
+            file="ntq_asset.report_assettransfer"
+        />
+        
+        <record id="asset_transfer_report" model="ir.actions.report.xml">
+			<field name="paperformat_id" ref="ntq_assetreport_euro_portrait" />
+		</record>
+    
+    </data>
+</odoo>

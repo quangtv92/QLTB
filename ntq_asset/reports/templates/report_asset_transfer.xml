@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    	<template id="report_assettransfer">
+    		<t t-call="report.html_container">
+    			<t t-foreach="docs" t-as="o">
+					<div class="page">
+						<div clas="row">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<td class="col-xs-3" style="border: 1px solid #CCCCCC;">
+											<img src="/ntq_asset/static/logo/company_logo.png" class="img img-responsive" style="max-height: 80px;"/>
+										</td>
+										<td class="col-xs-6" style="border: 1px solid #CCCCCC;">
+											<h3 style="text-align: center; font-size: 24px;" t-if="o.type in ['new','borrow']">BIÊN BẢN<br/>BÀN GIAO THIẾT BỊ</h3>
+											<h3 style="text-align: center; font-size: 24px;" t-if="o.type in ['collect_new','collect_borrow']">BIÊN BẢN<br/>TRAO TRẢ THIẾT BỊ</h3>
+										</td>
+										<td class="col-xs-3" style="border: 1px solid #CCCCCC;">
+											<ul style="list-style-type:none; font-size: 16px;">
+												<li>
+													<p>Mã số: BM-NTQ-06-03</p>
+												</li>
+												<li>
+													<p>Số ban hành: 01</p>
+												</li>
+												<li>
+													<p>Ngày ban hành: 02/06/2015</p>
+												</li>
+											</ul>
+										</td>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<br/><br/>
+						<div class="row">
+							<div class="col-xs-3">
+								<strong>Người bàn giao:</strong>
+							</div>
+							<div class="col-xs-3">
+								<span t-esc="o.transfer_by.name"/>
+							</div>
+							<div class="col-xs-6">
+								<strong>Team: </strong><span t-esc="o.transfer_by.department_id.name"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								<strong>Người nhận bàn giao:</strong>
+							</div>
+							<div class="col-xs-3">
+								<span t-esc="o.retrieve_by.name"/>
+							</div>
+							<div class="col-xs-6">
+								<strong>Team: </strong><span t-esc="o.retrieve_by.department_id.name"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								<strong>Lý do bàn giao:</strong>
+							</div>
+							<div class="col-xs-9">
+								<span t-esc="o.reason"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-12">
+								<strong>Danh sách thiết bị bàn giao:</strong>
+							</div>
+						</div>
+						<br />
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th style="vertical-align: middle; text-align: center;">STT</th>
+									<th style="vertical-align: middle; text-align: center;">Tên thiết bị</th>
+									<th style="vertical-align: middle; text-align: center;">Mã số</th>
+									<th style="vertical-align: middle; text-align: center;">Mô tả thiết bị</th>
+									<th style="vertical-align: middle; text-align: center;">Tình trạng (Phòng kỹ thuật xác nhận)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<t t-set="index" t-value="1" />
+								<t t-foreach="o.line_ids" t-as="line">
+									<t t-if="line.child_id">
+										<tr t-foreach="line.child_id" t-as="child">									
+											<td><span t-esc="index" /></td>
+											<td><span t-esc="child.name" /></td>
+											<td><span t-esc="child.asset_code.asset_code"/></td>
+											<td><span t-esc="child.description" /></td>
+											<td></td>
+											<t t-set="index" t-value="index + 1" />
+										</tr>
+									</t>
+									<t t-if="not line.child_id">
+										<tr>
+											<td><span t-esc="index"/></td>
+											<td><span t-esc="line.asset_id.name"/></td>
+											<td><span t-esc="line.asset_code.asset_code"/></td>
+											<td><span t-esc="line.description"/></td>
+											<td></td>
+											<t t-set="index" t-value="index + 1" />
+										</tr>
+									</t>
+								</t>								
+							</tbody>
+						</table>
+						<div class="row">
+							<div class="col-xs-12 text-right" style="padding-right:40px;">
+								Hà Nội, ngày ........ tháng ........
+								năm ........
+							</div>
+						</div>
+						<br/><br/>
+						<div class="row">
+							<div class="col-xs-3">
+								<p class="text-center">
+									<strong>
+										Người nhận bàn giao
+									</strong>
+									<br />
+									(Ký, họ tên)
+								</p>
+								<br/><br/><br/>
+								<p class="text-center">
+									<span t-esc="o.retrieve_by.name"/>
+								</p>
+							</div>
+							<div class="col-xs-3">
+								<p class="text-center">
+									<strong>
+										Phòng IT
+									</strong>
+									<br />
+									(Ký, họ tên)
+								</p>
+								<br/><br/><br/>
+								<p class="text-center">Phan Bá Tăng</p>
+							</div>
+							<div class="col-xs-3">
+								<p class="text-center">
+									<strong>
+										Trưởng bộ phận
+									</strong>
+									<br />
+									(Ký, họ tên)
+								</p>
+								<br/><br/><br/>
+								<p class="text-center">
+									<span t-esc="o.retrieve_by.department_id.manager_id.name" />
+								</p>
+							</div>
+							<div class="col-xs-3">
+								<p class="text-center">
+									<strong>
+										Người bàn giao
+									</strong>
+									<br />
+									(Ký, họ tên)
+								</p>
+								<br/><br/><br/>
+								<p class="text-center">
+									<span t-esc="o.transfer_by.name" />
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="footer">
+						<div class="text-center">
+							<ul class="list-inline">
+								<li>Page:</li>
+								<li>
+									<span class="page" />
+								</li>
+								<li>/</li>
+								<li>
+									<span class="topage" />
+								</li>
+							</ul>
+						</div>
+					</div>
+				</t>
+    		</t>
+    	</template>
+    
+    </data>
+</odoo>

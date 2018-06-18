@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<!-- Reject Asset Transfer -->
+    	
+    	<record id="asset_transfer_reject_form" model="ir.ui.view">
+	        <field name="name">asset.transfer.reject.wizard.form</field>
+	        <field name="model">asset.transfer.reject.wizard</field>
+	        <field name="arch" type="xml">
+	            <form string="Reject Asset Transfer">	                
+	                <separator string="Reason"/>
+	                <field name="reason"/>	                
+	                <footer>
+	                    <button string='Reject' name="reject_transfer" type="object" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+	           </form>
+	        </field>
+	    </record>
+	
+	    <record id="asset_transfer_reject_action" model="ir.actions.act_window">
+	        <field name="name">Reject Asset Transfer</field>
+	        <field name="res_model">asset.transfer.reject.wizard</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="asset_transfer_reject_form"/>
+	        <field name="target">new</field>
+	    </record>
+    
+    </data>
+</odoo>

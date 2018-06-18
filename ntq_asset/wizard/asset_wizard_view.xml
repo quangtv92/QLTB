@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<!-- Asset Wizard -->
+    	
+    	<record id="asset_wizard_form" model="ir.ui.view">
+	        <field name="name">asset.wizard.form</field>
+	        <field name="model">asset.wizard</field>
+	        <field name="arch" type="xml">
+	            <form string="Asset Wizard">
+	                <field name="type" invisible="1"/>
+	                <group>
+	                	<group attrs="{'invisible': [('type','!=','new')]}">	                		
+	                		<field name="origin"/>
+	                		<field name="purchase_order_id" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                            <field name="request_by" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                            <field name="approve_request_by" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                            <field name="purchase_date" attrs="{'invisible': [('origin','!=','buy')]}"/>                                        
+                            <field name="request_date" attrs="{'invisible': [('origin','!=','buy')]}"/>                                        
+                            <field name="origin_partner_id" attrs="{'invisible': [('origin','=','buy')]}"/>
+                            <field name="origin_date" attrs="{'invisible': [('origin','=','buy')]}"/>
+	                	</group>
+	                	<group>
+	                		<label for="own_by" string="Owner" attrs="{'invisible': [('type','!=','use')]}"/>
+                            <div attrs="{'invisible': [('type','!=','use')]}">
+	                            <field name="own_by" class="oe_inline"/> - 
+	                            <field name="employee_id" class="oe_inline"
+	                            	attrs="{'invisible': [('own_by','!=','employee')], 'required': [('own_by','=','employee'),('type','=','use')]}"/>
+	                            <field name="project_id" class="oe_inline"
+	                            	attrs="{'invisible': [('own_by','!=','project')], 'required': [('own_by','=','project'),('type','=','use')]}"/>
+	                            <field name="department_id" class="oe_inline"
+	                            	attrs="{'invisible': [('own_by','!=','department')], 'required': [('own_by','=','department'),('type','=','use')]}"/>
+	                            <field name="partner_id" class="oe_inline"
+	                                attrs="{'invisible': [('own_by','!=','customer')], 'required': [('own_by','=','customer')]}"/>
+                            </div>
+                            <field name="available_date"/>
+	                	</group>
+	                </group>	                
+	                <footer>
+	                    <button string='Apply' name="apply_asset_wizard" type="object" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+	           </form>
+	        </field>
+	    </record>
+	    
+	    <record id="asset_wizard_action" model="ir.actions.act_window">
+	        <field name="name">Asset Wizard</field>
+	        <field name="res_model">asset.wizard</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="asset_wizard_form"/>
+	        <field name="target">new</field>
+	    </record>
+	    
+	    <!-- Asset Disposed Wizard -->
+	    
+	    <record id="asset_disposed_wizard_form" model="ir.ui.view">
+	        <field name="name">asset.disposed.wizard.form</field>
+	        <field name="model">asset.wizard</field>
+	        <field name="arch" type="xml">
+	            <form string="Asset Disposed Wizard">
+	            	<field name="type" invisible="1"/>
+	            	<group>
+	            		<group>
+	            			<field name="lost_date" attrs="{'invisible': [('type','!=','lost')],'required': [('type','=','lost')]}"/>
+	            			<field name="liquidated_date" attrs="{'invisible': [('type','!=','liquidated')],'required': [('type','=','liquidated')]}"/>
+	            			<field name="disposed_date" attrs="{'invisible': [('type','!=','disposed')],'required': [('type','=','disposed')]}"/>
+	            		</group>
+	            		<group>
+	            			<field name="responsible" attrs="{'invisible': [('type','=','disposed')]}"/>
+	            		</group>
+	            	</group>
+	            	<separator string="Reason"/>
+	                <field name="reason"/>
+	                <footer>
+	                    <button string='Apply' name="apply_asset_wizard" type="object" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+	            </form>
+            </field>
+        </record>
+        
+        <record id="asset_disposed_wizard_action" model="ir.actions.act_window">
+	        <field name="name">Asset Disposed Wizard</field>
+	        <field name="res_model">asset.wizard</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="asset_disposed_wizard_form"/>
+	        <field name="target">new</field>
+	    </record>
+	    
+	    <!-- Generate Gift Entry -->
+	    
+	    <record id="asset_generate_entry_wizard_form" model="ir.ui.view">
+	        <field name="name">asset.generate.entry.wizard.form</field>
+	        <field name="model">asset.generate.entry.wizard</field>
+	        <field name="arch" type="xml">
+	            <form string="Generate Gift Entry Wizard">
+	            	<group>
+	            		<group>
+	            			<field name="journal_id"/>
+	            			<field name="ref"/>
+	            		</group>
+	            		<group>
+	            			<field name="date"/>
+	            			<field name="value"/>
+	            		</group>
+	            	</group>
+	                <footer>
+	                    <button string='Generate Entry' name="generate_entry" type="object" class="oe_highlight"/>
+	                    or
+	                    <button string="Cancel" class="oe_link" special="cancel"/>
+	                </footer>
+	            </form>
+            </field>
+        </record>
+        
+        <record id="asset_generate_entry_wizard_action" model="ir.actions.act_window">
+	        <field name="name">Generate Entry Wizard</field>
+	        <field name="res_model">asset.generate.entry.wizard</field>
+	        <field name="view_type">form</field>
+	        <field name="view_mode">form</field>
+	        <field name="view_id" ref="asset_generate_entry_wizard_form"/>
+	        <field name="target">new</field>
+	    </record>
+    
+    </data>
+</odoo>

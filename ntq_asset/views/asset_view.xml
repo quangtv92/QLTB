@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		
+		<record id="asset_inherit_form" model="ir.ui.view">
+			<field name="name">asset.inherit.form</field>
+			<field name="model">product.template</field>
+			<field name="inherit_id" ref="product.product_template_form_view" />
+			<field name="arch" type="xml">
+				<field name="type" position="after">
+					<field name="state" invisible="1"/>
+				</field>
+			</field>
+		</record>
+		
+		<record id="asset_tree" model="ir.ui.view">
+			<field name="name">asset.tree</field>
+			<field name="model">product.template</field>
+			<field name="priority">20</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Assets" decoration-info="state=='draft'" decoration-warning="state=='repair'"
+					decoration-muted="state in ['cancel','lost','liquidated','disposed']">
+					<field name="asset_code" />
+					<field name="name" />
+					<field name="categ_id" />
+					<field name="origin" />
+					<field name="own_by" invisible="1" />
+					<field name="employee_id" />
+					<field name="project_id" />
+					<field name="department_id" />
+					<field name="available_date" />
+					<field name="value" groups="base.group_asset_user,account.group_account_user" />
+					<field name="state" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="asset_form" model="ir.ui.view">
+			<field name="name">asset.group.form</field>
+			<field name="model">product.template</field>
+			<field name="priority">20</field>
+			<field name="arch" type="xml">
+				<form string="Asset">
+					<header>
+        				<button name="%(asset_wizard_action)d" states="draft" string="New Asset" type="action" class="oe_highlight" 
+        					groups="base.group_asset_user" context="{'default_type':'new'}" />
+       					<button name="available_asset" states="new,book,repair" string="Available" type="object" class="oe_highlight"
+       						groups="base.group_asset_user"/>        				
+        				<button name="%(asset_generate_entry_wizard_action)d" string="Generate Gift Entry" type="action" class="oe_highlight"
+        					groups="account.group_account_user" context="{'default_value':value}"
+        					attrs="{'invisible': ['|',('give_account_move_id','!=',False),('origin','!=','gift')]}"/>       					
+       					<button name="book_asset" states="available" string="Book" type="object" class="oe_highlight"
+        					groups="base.group_asset_user"/>
+       					<button name="%(asset_wizard_action)d" states="available,book" string="Use Asset" type="action" class="oe_highlight" 
+       						groups="base.group_asset_user" context="{'default_type':'use'}" />
+        				<button name="%(asset_wizard_action)d" states="available,use,book,fail" string="Repair" type="action" class="oe_highlight"
+        					groups="base.group_asset_user" context="{'default_type':'repair'}"/>
+       					<button name="%(asset_disposed_wizard_action)d" states="available,use,book,repair,fail" string="Lost" type="action"
+        					groups="base.group_asset_user" context="{'default_type':'lost'}"/>
+        				<button name="fail_asset" states="available,use,book" string="Fail" type="object" groups="base.group_asset_user"/>
+       					<button name="%(asset_disposed_wizard_action)d" states="available,use,book,repair,fail" string="Liquidate" type="action"
+        					groups="base.group_asset_user" context="{'default_type':'liquidated'}"/>
+        				<button name="%(asset_disposed_wizard_action)d" states="available,use,book,repair,fail" string="Dispose" type="action"
+        					groups="base.group_asset_user" context="{'default_type':'disposed'}"/>
+       					<button name="cancel_gift_entry" string="Cancel Gift Entry" type="object" groups="account.group_account_user"
+       						attrs="{'invisible': ['|',('origin','!=','gift'),('give_account_move_id','=',False)]}"/>
+       					<button name="cancel_asset" states="new,available,use,book,repair,fail,lost,liquidated,disposed" string="Cancel" type="object"
+        					groups="base.group_asset_manager"/>
+       					<button name="draft_asset" states="cancel" string="Set to Draft" type="object" class="oe_highlight"
+        					groups="base.group_asset_user"/>
+        				<!-- <field name="state" widget="statusbar" statusbar_visible="draft,new,available,book,use,fail,repair,lost,liquidated,disposed"/> -->
+        			</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <field name="image_medium" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="name" string="Asset Name"/>
+                            <h1>
+                            	<field name="name" placeholder="Asset Name" class="oe_inline"/>&#x2063;&#x2063;&#x2063;&#x2063;
+                            	<field name="state" class="label label-success oe_inline" style="font-size:11px;" />
+                            </h1>
+	                        <h3><field name="asset_code" placeholder="Asset Code" attrs="{'required': [('is_asset','=',True)]}"/></h3>
+							<div name="options" groups="base.group_user">
+								<div>
+									<field name="purchase_ok"/> <label for="purchase_ok"/>
+									<field name="is_asset" invisible="1"/>
+								</div>
+							</div>
+                        </div>
+                        <notebook>
+                        	<page name="general_info" string="General Information">
+                        		<group>
+                        			<group>
+                        				<field name="type" string="Asset Type"/>
+                        				<field name="categ_id" string="Asset Category"
+                        					domain="[('is_asset','=',True)]"
+                        					context="{'default_is_asset': 1}"/>
+                        				<field name="parent_id" attrs="{'invisible': [('state','not in',['new','available'])]}" 
+                        					context="{'form_view_ref':'ntq_asset.asset_product_form','default_is_asset': 1}"/>
+                        				<label for="own_by" string="Owner" attrs="{'invisible': [('state','!=', 'use')]}"/>
+	                                    <div attrs="{'invisible': [('state','!=', 'use')]}">
+	                                        <field name="own_by" class="oe_inline"/> - 
+	                                        <field name="employee_id" class="oe_inline"
+	                                        	attrs="{'invisible': [('own_by','!=','employee')], 'required': [('own_by','=','employee')]}"/>
+	                                        <field name="project_id" class="oe_inline"
+	                                        	attrs="{'invisible': [('own_by','!=','project')], 'required': [('own_by','=','project')]}"/>
+	                                        <field name="department_id" class="oe_inline"
+	                                        	attrs="{'invisible': [('own_by','!=','department')], 'required': [('own_by','=','department')]}"/>
+	                                        <field name="partner_id" class="oe_inline"
+	                                        	attrs="{'invisible': [('own_by','!=','customer')], 'required': [('own_by','=','customer')]}"/>	                                        
+	                                    </div>
+	                                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>                                        
+                        			</group>
+                        			<group>
+                        				<field name="serial"/>
+                        				<field name="label"/>
+                        				<field name="warranty_reference"/>
+                        				<label for="warranty_from" string="Warranty Duration"/>
+	                                    <div>
+	                                        <field name="warranty_from" class="oe_inline"/> - <field name="warranty_to" class="oe_inline"/>
+	                                    </div>
+	                                    <field name="available_date" attrs="{'invisible': [('state','in', ['draft','cancel','lost','liquidated','disposed'])]}"/>
+                        			</group>
+                        		</group>
+                        		<!-- Note Child Asset -->
+                        		<separator string="Child Assets" />
+                        		<field name="child_id" context="{'form_view_ref':'ntq_asset.asset_form','default_is_asset': 1}" readonly="True">
+                        			<tree string="Child Assets">
+                        				<field name="asset_code" />
+										<field name="name" />
+										<field name="categ_id" invisible="1" />
+										<field name="origin" invisible="1"/>
+										<field name="own_by" invisible="1" />
+										<field name="employee_id" string="Last used by"/>
+										<field name="project_id" />
+										<field name="department_id" />
+										<field name="available_date" />
+										<field name="value" groups="base.group_asset_user,account.group_account_user" invisible="1" />
+										<field name="state" />
+                        			</tree>
+                        		</field>
+                        		<separator string="Description" />
+								<field name="description"/>
+                        	</page>
+                        	<page name="origin" groups="base.group_asset_user,account.group_account_user" string="Origin" 
+                        		attrs="{'invisible': [('state','=','draft')]}">
+                        		<group>
+                        			<group>
+                        				<field name="origin"/>
+                        				<field name="purchase_order_id" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="purchase_date" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="origin_partner_id" attrs="{'invisible': [('origin','=','buy')]}"/>                          				 
+                        			</group>
+                        			<group>
+                        				<field name="request_date" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="request_by" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="approve_request_by" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="origin_date" attrs="{'invisible': [('origin','=','gift')]}"/>                        				
+                        			</group>
+                        		</group>
+                        	</page>
+                        	<page name="accounting" string="Accounting" groups="account.group_account_user">
+                        		<group>
+                        			<group>
+                        				<field name="property_account_income_id"
+		                                    domain="[('internal_type','=','other'),('deprecated','=',False)]"
+		                                    groups="account.group_account_user"/>
+	                                    <field name="property_account_expense_id"
+		                                    domain="[('internal_type','=','other'),('deprecated','=',False)]"
+		                                    groups="account.group_account_user"/>
+	                                    <field name="taxes_id" widget="many2many_tags"/>
+	                                    <field name="supplier_taxes_id" widget="many2many_tags"/>
+                        			</group>
+                        			<group>
+                        				<field name="value"/>
+                        				<field name="account_asset_id"/>
+                        				<field name="give_account_move_id" attrs="{'invisible': [('origin','!=','gift')]}"/>
+                        			</group>
+                        		</group>
+                        	</page>
+                        	<page name="history" string="Transfer History">
+                        		<field name="history_ids">
+                        			<tree string="Asset History">
+                        				<field name="date"/>
+                        				<field name="transfer_date"/>
+                        				<field name="retrieve_by"/>
+                        				<field name="transfer_id"/>
+                        				<field name="type"/>
+                        			</tree>
+                        			<form string="Asset History">
+                        				<group>
+                        					<group>
+                        						<field name="date"/>
+                        						<field name="retrieve_by"/>
+                        					</group>
+                        					<group>
+                        						<field name="transfer_date"/>
+                        						<field name="transfer_id"/>
+                        						<field name="type"/>
+                        					</group>
+                        				</group>
+                        			</form>
+                        		</field>
+                        	</page>
+                        </notebook>
+					</sheet>
+					<!-- Log Chatter -->
+					<div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+				</form>
+			</field>
+		</record>
+		
+		<record id="asset_product_form" model="ir.ui.view">
+			<field name="name">asset.group.form</field>
+			<field name="model">product.product</field>
+			<field name="priority">20</field>
+			<field name="arch" type="xml">
+				<form string="Asset">
+					<header>
+        				<field name="state" widget="statusbar" statusbar_visible="draft,new,available,book,use,repair,lost,liquidated,disposed"/>
+        			</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <field name="image_medium" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="name" string="Asset Name"/>
+                            <h1><field name="name" placeholder="Asset Name"/></h1>
+                        </div>
+                        <notebook>
+                        	<page name="general_info" string="General Information">
+                        		<group>
+                        			<group>
+                        				<field name="type" string="Asset Type"/>
+                        				<field name="categ_id" string="Asset Category"
+                        					domain="[('is_asset','=',True)]"
+                        					context="{'default_is_asset': 1}"/>
+                        				<field name="parent_id" context="{'form_view_ref':'ntq_asset.asset_product_form','default_is_asset': 1}"/>
+                        				<label for="own_by" string="Owner" attrs="{'invisible': [('state','!=', 'use')]}"/>
+	                                    <div attrs="{'invisible': [('state','!=', 'use')]}">
+	                                        <field name="own_by" class="oe_inline"/> - 
+	                                        <field name="employee_id" class="oe_inline"
+	                                        	attrs="{'invisible': [('own_by','!=','employee')], 'required': [('own_by','=','employee')]}"/>
+	                                        <field name="project_id" class="oe_inline"
+	                                        	attrs="{'invisible': [('own_by','!=','project')], 'required': [('own_by','=','project')]}"/>
+	                                        <field name="department_id" class="oe_inline"
+	                                        	attrs="{'invisible': [('own_by','!=','department')], 'required': [('own_by','=','department')]}"/>	                                        
+	                                    </div>
+	                                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>                                        
+                        			</group>
+                        			<group>
+                        				<field name="asset_code"/>
+                        				<field name="serial"/>
+                        				<field name="label"/>
+                        				<field name="warranty_reference"/>
+                        				<label for="warranty_from" string="Warranty Duration"/>
+	                                    <div>
+	                                        <field name="warranty_from" class="oe_inline"/> - <field name="warranty_to" class="oe_inline"/>
+	                                    </div>
+	                                    <field name="available_date" attrs="{'invisible': [('state','in', ['draft','cancel','lost','liquidated','disposed'])]}"/>
+                        			</group>
+                        		</group>
+                        		<separator string="Description" />
+								<field name="description"/>
+                        	</page>
+                        	<page name="origin" groups="base.group_asset_user,account.group_account_user" string="Origin" 
+                        		attrs="{'invisible': [('state','=','draft')]}">
+                        		<group>
+                        			<group>
+                        				<field name="origin"/>
+                        				<field name="purchase_order_id" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="purchase_date" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="origin_partner_id" attrs="{'invisible': [('origin','!=','gift')]}"/>                          				 
+                        			</group>
+                        			<group>
+                        				<field name="request_date" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="request_by" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="approve_request_by" attrs="{'invisible': [('origin','!=','buy')]}"/>
+                        				<field name="origin_date" attrs="{'invisible': [('origin','!=','gift')]}"/>                        				
+                        			</group>
+                        		</group>
+                        	</page>
+                        	<page name="accounting" string="Accounting" groups="account.group_account_user">
+                        		<group>
+                        			<group>
+                        				<field name="property_account_income_id"
+		                                    domain="[('internal_type','=','other'),('deprecated','=',False)]"
+		                                    groups="account.group_account_user"/>
+	                                    <field name="property_account_expense_id"
+		                                    domain="[('internal_type','=','other'),('deprecated','=',False)]"
+		                                    groups="account.group_account_user"/>
+	                                    <field name="taxes_id" widget="many2many_tags"/>
+	                                    <field name="supplier_taxes_id" widget="many2many_tags"/>
+                        			</group>
+                        			<group>
+                        				<field name="value"/>
+                        				<field name="account_asset_id"/>
+                        				<field name="give_account_move_id" attrs="{'invisible': [('origin','!=','gift')]}"/>
+                        			</group>
+                        		</group>
+                        	</page>
+                        	<page name="history" string="Transfer History">
+                        		<field name="history_ids">
+                        			<tree string="Asset History">
+                        				<field name="date"/>
+                        				<field name="transfer_date"/>
+                        				<field name="retrieve_by"/>
+                        				<field name="transfer_id"/>
+                        				<field name="type"/>
+                        			</tree>
+                        			<form string="Asset History">
+                        				<group>
+                        					<group>
+                        						<field name="date"/>
+                        						<field name="retrieve_by"/>
+                        					</group>
+                        					<group>
+                        						<field name="transfer_date"/>
+                        						<field name="transfer_id"/>
+                        						<field name="type"/>
+                        					</group>
+                        				</group>
+                        			</form>
+                        		</field>
+                        	</page>
+                        </notebook>
+					</sheet>
+					<div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+				</form>
+			</field>
+		</record>
+		<!-- Search Asset Code -->
+		<record id="asset_filter" model="ir.ui.view">
+            <field name="name">asset.filter</field>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <search string="Asset">
+                	<field name="name" string="Product Name"/>
+                	<field name="asset_code" string="Asset Code"/>
+                	<field name="description"/>                	
+                	<field name="employee_id"/>
+                	<field name="partner_id" />
+                	<field name="project_id"/>
+                	<field name="department_id"/>
+                	<field name="serial"/>
+                	<field name="label"/>
+                	<separator/>
+                	<filter name="can_be_sold" domain="[('sale_ok','=',True)]" string="Can be Sold" />
+                	<filter name="buy" domain="[('origin', '=', 'buy')]" string="Origin: Buy"/>
+                	<filter name="gift" domain="[('origin', '=', 'gift')]" string="Origin: Gift"/>
+                	<filter name="rent" domain="[('origin', '=', 'rent')]" string="Origin: Rent"/>
+                	<filter name="borrow" domain="[('origin', '=', 'borrow')]" string="Origin: Borrow"/>
+                	<filter name="draft" domain="[('state', '=', 'draft')]" string="Draft"/>
+                	<filter name="new" domain="[('state', '=', 'new')]" string="New"/>
+                	<filter name="book" domain="[('state', '=', 'book')]" string="Booked"/>
+                	<filter name="available" domain="[('state', '=', 'available')]" string="Available"/>
+                	<filter name="use" domain="[('state', '=', 'use')]" string="In Use"/>
+                	<filter name="repair" domain="[('state', '=', 'repair')]" string="Repair"/>
+                	<filter name="lost" domain="[('state', '=', 'lost')]" string="Lost"/>
+                	<filter name="liquidated" domain="[('state', '=', 'liquidated')]" string="Liquidated"/>
+                	<filter name="disposed" domain="[('state', '=', 'disposed')]" string="Disposed"/>
+                	<filter name="cancel" domain="[('state', '=', 'cancel')]" string="Canceled"/>
+                	<separator/>
+                	<filter name="inactive" domain="[('active', '=', False)]" string="Former Asset"/>
+                	<group expand="0" string="Group By">
+                		<filter name="group_by_categ_id" string="Asset Category" context="{'group_by':'categ_id'}"/>
+                		<filter name="group_by_parent_id" string="Parent" context="{'group_by':'parent_id'}"/>
+                		<filter name="group_by_employee_id" string="Employee" context="{'group_by':'employee_id'}"/>
+                		<filter name="group_by_project_id" string="Project" context="{'group_by':'project_id'}"/>
+                		<filter name="group_by_department_id" string="Department" context="{'group_by':'department_id'}"/>
+                		<filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>
+                	</group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="asset_kanban" model="ir.ui.view">
+            <field name="name">asset.kanban</field>
+            <field name="model">product.template</field>
+            <field name="priority">20</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="image_small"/>
+                    <field name="lst_price"/>
+                    <field name="product_variant_count"/>
+                    <field name="product_variant_ids"/>
+                    <field name="currency_id"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img t-att-src="kanban_image('product.template', 'image_small', record.id.value)"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <strong>
+                                        <span t-if="record.default_code.value">[<field name="default_code"/>]</span>
+                                        <field name="name"/>
+                                    </strong>
+                                    <div t-if="record.product_variant_count.value &gt; 1">
+                                        <strong>
+                                            <t t-esc="record.product_variant_count.value"/> Variants
+                                        </strong>
+                                    </div>
+                                    <div name="tags"/>
+                                    <ul>
+                                        <li><field name="asset_code"></field></li>
+                                        <li>Status:<field name="state"></field></li>
+                                        <li><field name="last_used"></field></li>
+                                    </ul>
+                                    <div name="tags"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+		
+		<record id="asset_action" model="ir.actions.act_window">
+			<field name="name">Assets</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">product.template</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">kanban,tree,form</field>
+			<field name="domain">[('is_asset','=',True)]</field>
+			<field name="context">{'default_is_asset': 1,'search_default_group_by_state': 1}</field>
+			<field name="search_view_id" ref="asset_filter"/>
+		</record>
+		
+		<record id="action_asset_tree1_view1" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="asset_kanban"/>
+            <field name="act_window_id" ref="asset_action"/>
+        </record>
+
+        <record id="action_asset_tree1_view2" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="asset_tree"/>
+            <field name="act_window_id" ref="asset_action"/>
+        </record>
+        
+        <record id="action_asset_tree1_view3" model="ir.actions.act_window.view">
+            <field eval="3" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="asset_form"/>
+            <field name="act_window_id" ref="asset_action"/>
+        </record>
+		
+		<menuitem id="menu_asset" action="asset_action"
+			parent="menu_asset_root" groups="base.group_user"
+			sequence="1" />		
+
+	</data>
+</odoo>

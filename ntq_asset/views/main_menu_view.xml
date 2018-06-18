@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<menuitem id="menu_asset_root" name="Assets" groups="base.group_user"
+			icon="fa-user" sequence="76" />
+			
+		<menuitem id="menu_asset_config_root" name="Configuration"
+			parent="menu_asset_root" groups="base.group_asset_user,account.group_account_user"
+			sequence="100" />
+			
+		<menuitem id="menu_allocation_main" parent="menu_asset_root"
+			name="Assets Allocation" groups="base.group_user" icon="fa-user"
+			sequence="2" />
+
+		<menuitem id="menu_lending_main" parent="menu_asset_root"
+			name="Assets Lending" groups="base.group_user" icon="fa-user"
+			sequence="3" />
+			
+		<menuitem id="menu_allocation_agreement_main" parent="menu_allocation_main" name="Agreements" sequence="3" />
+		    	
+    	<menuitem id="menu_lending_agreement_main" parent="menu_lending_main" name="Agreements" sequence="3" />
+    
+    </data>
+</odoo>

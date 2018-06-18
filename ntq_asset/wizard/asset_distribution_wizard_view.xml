@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<!-- Reject Asset Distribution -->
+
+		<record id="asset_distribution_reject_form" model="ir.ui.view">
+			<field name="name">asset.distribution.reject.wizard.form</field>
+			<field name="model">asset.distribution.reject.wizard</field>
+			<field name="arch" type="xml">
+				<form string="Reject Asset Distribution">
+					<separator string="Reason" />
+					<field name="reason" />
+					<footer>
+						<button string='Reject' name="reject_distribution" type="object"
+							class="oe_highlight" />
+						or
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="asset_distribution_reject_action" model="ir.actions.act_window">
+			<field name="name">Reject Asset Distribution</field>
+			<field name="res_model">asset.distribution.reject.wizard</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="asset_distribution_reject_form" />
+			<field name="target">new</field>
+		</record>
+
+		<!-- Create Asset Transfer -->
+
+		<record id="asset_distribution_create_transfer_form" model="ir.ui.view">
+			<field name="name">asset.distribution.create.transfer.wizard.form
+			</field>
+			<field name="model">asset.distribution.create.transfer</field>
+			<field name="arch" type="xml">
+				<form string="Transfer Asset">
+					<group>
+						<group>
+							<field name="type" invisible="1"/>
+							<field name="transfer_by" />
+							<field name="retrieve_by" />
+							<label for="own_by" string="Owner" />
+							<div>
+								<field name="own_by" class="oe_inline" />
+								-
+								<field name="employee_id" class="oe_inline"
+									attrs="{'invisible': [('own_by','!=','employee')], 'required': [('own_by','=','employee')]}" />
+								<field name="project_id" class="oe_inline"
+									attrs="{'invisible': [('own_by','!=','project')], 'required': [('own_by','=','project')]}" />
+								<field name="department_id" class="oe_inline"
+									attrs="{'invisible': [('own_by','!=','department')], 'required': [('own_by','=','department')]}" />
+								<field name="partner_id" class="oe_inline"
+									attrs="{'invisible': [('own_by','!=','customer')], 'required': [('own_by','=','customer')]}" />
+							</div>
+							<field name="it_check" />
+							<field name="assign_to"
+								attrs="{'invisible': [('it_check','=',False)], 'required': [('it_check','=',True)]}" />
+						</group>
+						<group>
+							<field name="date" />
+							<field name="collected_date" attrs="{'invisible': [('type','!=','borrow')], 'required': [('type','=','borrow')]}" />
+							<field name="journal_id" />
+							<field name="memo" />
+							<field name="parent_id" invisible="1"/>
+						</group>
+					</group>
+					<separator string="Reason" />
+					<field name="reason" />
+					<footer>
+						<button string='Transfer' name="transfer" type="object"
+							class="oe_highlight" />
+						or
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+
+		<record id="asset_distribution_create_transfer_action" model="ir.actions.act_window">
+			<field name="name">Transfer Asset</field>
+			<field name="res_model">asset.distribution.create.transfer</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="asset_distribution_create_transfer_form" />
+			<field name="target">new</field>
+		</record>
+		
+		<!-- Create Asset Transfer from Lines -->
+
+		<record id="asset_distribution_line_create_transfer_form" model="ir.ui.view">
+			<field name="name">asset.distribution.line.create.transfer.wizard.form
+			</field>
+			<field name="model">asset.distribution.line.create.transfer</field>
+			<field name="arch" type="xml">
+				<form string="Transfer Asset">
+					<group>
+						<group>
+							<field name="type" invisible="1" />
+							<field name="transfer_by" />
+							<field name="retrieve_by" />
+							<label for="own_by" string="Owner" />
+							<div>
+								<field name="own_by" class="oe_inline" />
+								-
+								<field name="employee_id" class="oe_inline"
+									attrs="{'invisible': [('own_by','!=','employee')], 'required': [('own_by','=','employee')]}" />
+								<field name="project_id" class="oe_inline"
+									attrs="{'invisible': [('own_by','!=','project')], 'required': [('own_by','=','project')]}" />
+								<field name="department_id" class="oe_inline"
+									attrs="{'invisible': [('own_by','!=','department')], 'required': [('own_by','=','department')]}" />
+								<field name="partner_id" class="oe_inline"
+									attrs="{'invisible': [('own_by','!=','customer')], 'required': [('own_by','=','customer')]}" />
+							</div>
+							<field name="it_check" />
+							<field name="assign_to"
+								attrs="{'invisible': [('it_check','=',False)], 'required': [('it_check','=',True)]}" />
+						</group>
+						<group>
+							<field name="date" />
+							<field name="collected_date" attrs="{'invisible': [('type','!=','borrow')], 'required': [('type','=','borrow')]}" />
+							<field name="journal_id" />
+							<field name="memo" />
+						</group>
+					</group>
+					<separator string="Reason" />
+					<field name="reason" />
+					<footer>
+						<button string='Transfer' name="transfer" type="object"
+							class="oe_highlight" />
+						or
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+				</form>
+			</field>
+		</record>
+		
+		<record id="asset_distribution_line_create_transfer_action" model="ir.actions.act_window">
+			<field name="name">Transfer Asset</field>
+			<field name="res_model">asset.distribution.line.create.transfer</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="asset_distribution_line_create_transfer_form" />
+			<field name="target">new</field>
+		</record>
+		
+		<record id="asset_distribution_line_create_transfer" model="ir.values">
+            <field name="model_id" ref="ntq_asset.model_asset_distribution_line_create_transfer" />
+            <field name="name">Create Agreement</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('asset_distribution_line_create_transfer_action'))" />
+            <field name="key">action</field>
+            <field name="model">asset.distribution.line</field>
+        </record>
+        
+        <!-- Asset for Collecting -->
+        
+        <record id="asset_collecting_line_create_transfer_action" model="ir.actions.act_window">
+			<field name="name">Collect Assets</field>
+			<field name="res_model">asset.distribution.line.create.transfer</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="asset_distribution_line_create_transfer_form" />
+			<field name="target">new</field>
+			<field name="context">{'default_type': 'collect_borrow'}</field>
+		</record>
+		
+		<record id="asset_collecting_line_create_transfer" model="ir.values">
+            <field name="model_id" ref="ntq_asset.model_asset_distribution_line_create_transfer" />
+            <field name="name">Collect Assets</field>
+            <field name="key2">client_action_multi</field>
+            <field name="value" eval="'ir.actions.act_window,' + str(ref('asset_collecting_line_create_transfer_action'))" />
+            <field name="key">action</field>
+            <field name="model">asset.transfer.line</field>
+        </record>
+
+	</data>
+</odoo>

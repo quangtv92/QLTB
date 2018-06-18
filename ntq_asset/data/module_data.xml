@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<record id="module_category_asset" model="ir.module.category">
+            <field name="name">Assets</field>
+            <field name="description">Helps you manage your assets.</field>
+            <field name="sequence">10</field>
+        </record>
+    
+    </data>
+</odoo>

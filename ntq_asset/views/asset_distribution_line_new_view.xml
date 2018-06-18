@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<record id="asset_distribution_line_tree" model="ir.ui.view">
+			<field name="name">asset.distribution.line.tree</field>
+			<field name="model">asset.distribution.line</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Request Assets for Allocation" create="0" edit="0"
+					delete="0">
+					<field name="asset_id" />
+					<field name="asset_code" />
+					<field name="deadline" />
+					<field name="name" />
+					<field name="asset_state" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="asset_distribution_line_form" model="ir.ui.view">
+			<field name="name">asset.distribution.line.form</field>
+			<field name="model">asset.distribution.line</field>
+			<field name="arch" type="xml">
+				<form string="Request Assets for Allocation" create="0" edit="0"
+					delete="0">
+					<sheet>
+						<group>
+							<group>
+								<field name="asset_id" 
+									context="{'form_view_ref':'ntq_asset.asset_product_form','default_is_asset': 1}"/>
+								<label for="distrubute_to" string="Allocate To" />
+								<div>
+									<field name="distrubute_to" class="oe_inline" />
+									-
+									<field name="employee_id" class="oe_inline"
+										attrs="{'invisible': [('distrubute_to','!=','employee')]}" />
+									<field name="project_id" class="oe_inline"
+										attrs="{'invisible': [('distrubute_to','!=','project')]}" />
+									<field name="department_id" class="oe_inline"
+										attrs="{'invisible': [('distrubute_to','!=','department')]}" />
+								</div>
+								<field name="priority" />
+								<field name="asset_group_id" />
+								<field name="asset_state" />
+							</group>
+							<group>
+								<field name="distribution_id" string="Request"
+									context="{'form_view_ref':'ntq_asset.asset_distribution_form','default_type': 'new'}" />
+								<field name="distribute_date" />
+								<field name="deadline" />
+							</group>
+						</group>
+						<separator string="Description" />
+						<field name="name" />
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="asset_distribution_line_search" model="ir.ui.view">
+			<field name="name">asset.distribution.line.filter</field>
+			<field name="model">asset.distribution.line</field>
+			<field name="arch" type="xml">
+				<search string="Request Assets for Allocation">
+					<field name="distribution_id" />
+					<field name="asset_id" />
+					<field name="asset_code" />
+					<field name="name" />
+					<separator />
+					<filter name="priority_low" domain="[('priority', '=', 'low')]"
+						string="Priority: Low" />
+					<filter name="priority_medium" domain="[('priority', '=', 'medium')]"
+						string="Priority: Medium" />
+					<filter name="priority_high" domain="[('priority', '=', 'high')]"
+						string="Priority: High" />
+					<group expand="0" string="Group By">
+						<filter name="group_distribution" string="Request"
+							context="{'group_by':'distribution_id'}" />
+					</group>
+				</search>
+			</field>
+		</record>
+
+		<record id="asset_distribution_line_calendar" model="ir.ui.view">
+			<field name="name">asset.distribution.line.calendar</field>
+			<field name="model">asset.distribution.line</field>
+			<field name="arch" type="xml">
+				<calendar string="Calendar View" date_start="deadline"
+					color="state">
+					<field name="asset_id" />
+					<field name="priority" />
+				</calendar>
+			</field>
+		</record>
+
+		<record id="asset_distribution_line_action" model="ir.actions.act_window">
+			<field name="name">For Allocation</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">asset.distribution.line</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="context">{'default_type': 'new',
+				'search_default_group_distribution': 1}
+			</field>
+			<field name="domain">[('type','=','new'),('state','=','available'), ('asset_state','=','book')]
+			</field>
+		</record>
+
+		<record id="action_distribution_line_tree1_view1" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="asset_distribution_line_tree" />
+			<field name="act_window_id" ref="asset_distribution_line_action" />
+		</record>
+
+		<record id="action_distribution_line_tree1_view2" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="asset_distribution_line_form" />
+			<field name="act_window_id" ref="asset_distribution_line_action" />
+		</record>
+
+		<record id="action_distribution_line_tree1_view3" model="ir.actions.act_window.view">
+			<field eval="3" name="sequence" />
+			<field name="view_mode">calendar</field>
+			<field name="view_id" ref="asset_distribution_line_calendar" />
+			<field name="act_window_id" ref="asset_distribution_line_action" />
+		</record>
+
+		<menuitem id="menu_asset_distribution_line_main" name="Assets"
+			parent="menu_allocation_main" sequence="2" />
+		<menuitem id="menu_asset_distribution_line" action="asset_distribution_line_action"
+			parent="menu_asset_distribution_line_main" sequence="1" />
+    
+    </data>
+</odoo>

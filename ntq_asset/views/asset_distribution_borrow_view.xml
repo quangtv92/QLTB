@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<record id="asset_distribution_borrow_tree" model="ir.ui.view">
+			<field name="name">asset.distribution.tree</field>
+			<field name="model">asset.distribution</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Asset Distribution" decoration-info="state=='draft'"
+					decoration-warning="state=='available'" decoration-muted="state in ['reject','cancel']"
+					decoration-success="state=='transfer'" decoration-bf="message_unread == True">
+					<field name="name" />
+					<field name="asset_group_id" />
+					<field name="employee_id" />
+					<field name="project_id" />
+					<field name="department_id" />
+					<field name="priority" />
+					<field name="distribute_date" />
+					<field name="borrow_date" />
+					<field name="expired_date" />
+					<field name="state" />
+					<field name="message_unread" invisible="1" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="asset_distribution_borrow_form" model="ir.ui.view">
+			<field name="name">asset.distribution.borrow.form</field>
+			<field name="model">asset.distribution</field>
+			<field name="arch" type="xml">
+				<form string="Asset Distribution">
+					<header>
+						<button name="submit" states="draft" string="Submit to Manager"
+							type="object" class="oe_highlight" groups="base.group_user" />
+						<button name="approve" string="Approve" type="object"
+							class="oe_highlight" groups="project.group_project_pm"
+							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','pm')]}" />
+						<button name="%(asset_distribution_reject_action)d" string="Reject"
+							type="action" groups="project.group_project_pm"
+							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','pm')]}" />
+						<button name="approve" string="Approve" type="object"
+							class="oe_highlight" groups="base.group_asset_em"
+							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','em')]}" />
+						<button name="%(asset_distribution_reject_action)d" string="Reject"
+							type="action" groups="base.group_asset_em"
+							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','em')]}" />
+						<button name="approve" string="Approve" type="object"
+							class="oe_highlight" groups="base.group_asset_dm"
+							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','dm')]}" />
+						<button name="%(asset_distribution_reject_action)d" string="Reject"
+							type="action" groups="base.group_asset_dm"
+							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','dm')]}" />
+						<button name="confirm" states="approve" string="Confirm"
+							type="object" class="oe_highlight" groups="base.group_asset_user" />
+						<button name="check_available" states="waiting_avai"
+							string="Check Available" type="object" class="oe_highlight"
+							groups="base.group_asset_user" />
+						<button name="%(asset_distribution_reject_action)d" states="approve"
+							string="Reject" type="action" groups="base.group_asset_user" />
+						<button name="%(asset_distribution_create_transfer_action)d"
+							states="available" string="Transfer" type="action" class="oe_highlight"
+							context="{
+        						'default_own_by': distrubute_to,
+        						'default_employee_id': employee_id,
+        						'default_project_id': project_id,
+        						'default_department_id': department_id,
+        						'default_type': type,
+        						'default_collected_date': expired_date}"
+							groups="base.group_asset_user" />
+						<button name="cancel"
+							states="waiting,approve,reject,waiting_avai,available" string="Cancel"
+							type="object" groups="base.group_asset_manager" />
+						<button name="set_draft" states="cancel,reject" string="Set to Draft"
+							type="object" class="oe_highlight" groups="base.group_user" />
+						<field name="state" widget="statusbar"
+							statusbar_visible="draft,waiting,approve,waiting_avai,available,transfer" />
+					</header>
+					<sheet>
+						<div class="oe_button_box" name="button_box">
+							<button name="%(distribution_2_transfer_action)d" string="Transfers"
+								icon="fa-refresh" class="oe_stat_button" type="action"
+								attrs="{'invisible': [('state','!=','transfer')]}" />
+						</div>
+						<div class="oe_title">
+							<label class="oe_edit_only" for="name" string="Title" />
+							<h1>
+								<field name="name" />
+							</h1>
+						</div>
+						<group>
+							<group>
+								<field name="approve_status" invisible="1" />
+								<field name="type" invisible="1" />
+								<label for="distrubute_to" string="Allocate To" />
+								<div>
+									<field name="distrubute_to" class="oe_inline" />
+									-
+									<field name="employee_id" class="oe_inline"
+										attrs="{'invisible': [('distrubute_to','!=','employee')], 'required': [('distrubute_to','=','employee')]}" />
+									<field name="project_id" class="oe_inline"
+										attrs="{'invisible': [('distrubute_to','!=','project')], 'required': [('distrubute_to','=','project')]}" />
+									<field name="department_id" class="oe_inline"
+										attrs="{'invisible': [('distrubute_to','!=','department')], 'required': [('distrubute_to','=','department')]}" />
+								</div>
+								<field name="priority" />
+								<field name="asset_group_id" />
+							</group>
+							<group>
+								<field name="distribute_date" />
+								<field name="borrow_date" required="1" />
+								<field name="expired_date" required="1" />
+								<field name="approve_by" />
+							</group>
+						</group>
+						<notebook>
+							<page name="line" string="Distribution Details">
+								<field name="line_ids" context="{'default_expired_date': expired_date}">
+									<tree string="Distribution Details">
+										<field name="asset_id"
+											context="{'form_view_ref':'ntq_asset.asset_product_form','default_is_asset': 1}"
+											domain="[('is_asset','=',True),('state','in',['new','available'])]" />
+										<field name="name" />
+										<field name="expired_date" invisible="1" />
+										<field name="asset_state" />
+										<field name="state" invisible="1" />
+									</tree>
+									<form string="Request Borrow Assets for Allocation">
+										<sheet>
+											<group>
+												<group>
+													<field name="asset_id" 
+														context="{'form_view_ref':'ntq_asset.asset_product_form','default_is_asset': 1}"
+														domain="[('is_asset','=',True),('state','in',['draft','new','available'])]"/>
+													<field name="product_tmpl_id" invisible="1"/>													
+												</group>
+												<group>
+													<field name="asset_state" />
+													<field name="state" invisible="1" />
+												</group>
+											</group>
+											<separator string="Child Assets" />
+											<field name="child_id" domain="[('parent_id','=',product_tmpl_id)]" 
+												context="{'form_view_ref':'ntq_asset.asset_form','default_is_asset': 1, 'default_parent_id':asset_id}">
+												<tree string="Child Assets" create="0">
+			                        				<field name="asset_code" />
+													<field name="name" />
+													<field name="categ_id" invisible="1" />
+													<field name="origin" invisible="1"/>
+													<field name="own_by" invisible="1" />
+													<field name="employee_id" string="Last used by"/>
+													<field name="project_id" />
+													<field name="department_id" />
+													<field name="available_date" />
+													<field name="value" groups="base.group_asset_user,account.group_account_user" invisible="1" />
+													<field name="state" />
+			                        			</tree>
+											</field>
+											<separator string="Description" />
+											<field name="name" />
+										</sheet>
+									</form>
+								</field>
+								<separator string="Description" />
+								<field name="description" />
+							</page>
+						</notebook>
+					</sheet>
+					<div class="oe_chatter">
+						<field name="message_follower_ids" widget="mail_followers" />
+						<field name="message_ids" widget="mail_thread" />
+					</div>
+				</form>
+			</field>
+		</record>
+
+		<record id="asset_distribution_borrow_calendar" model="ir.ui.view">
+			<field name="name">asset.distribution.calendar</field>
+			<field name="model">asset.distribution</field>
+			<field name="arch" type="xml">
+				<calendar string="Calendar View" date_start="borrow_date"
+					color="state">
+					<field name="name" />
+					<field name="priority" />
+				</calendar>
+			</field>
+		</record>
+
+		<record id="asset_distribution_borrow_action" model="ir.actions.act_window">
+			<field name="name">Requests</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">asset.distribution</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar</field>
+			<field name="context">{'default_type': 'borrow'}</field>
+			<field name="domain">[('type','=','borrow')]</field>
+		</record>
+
+		<record id="action_distribution_borrow_tree2_view1" model="ir.actions.act_window.view">
+			<field eval="1" name="sequence" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="asset_distribution_borrow_tree" />
+			<field name="act_window_id" ref="asset_distribution_borrow_action" />
+		</record>
+
+		<record id="action_distribution_borrow_tree2_view2" model="ir.actions.act_window.view">
+			<field eval="2" name="sequence" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="asset_distribution_borrow_form" />
+			<field name="act_window_id" ref="asset_distribution_borrow_action" />
+		</record>
+
+		<record id="action_distribution_borrow_tree2_view3" model="ir.actions.act_window.view">
+			<field eval="3" name="sequence" />
+			<field name="view_mode">calendar</field>
+			<field name="view_id" ref="asset_distribution_borrow_calendar" />
+			<field name="act_window_id" ref="asset_distribution_borrow_action" />
+		</record>
+
+		<menuitem id="menu_asset_distribution_borow" action="asset_distribution_borrow_action"
+			parent="menu_lending_main" sequence="1" />
+    
+    </data>
+</odoo>

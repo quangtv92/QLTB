@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<record id="product_template_inherit_form" model="ir.ui.view">
+            <field name="name">product.template.inherit.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <div name="options" position="inside">
+                    <div>
+                        <field name="is_asset"/>
+                        <label for="is_asset"/>
+                    </div>
+                    <h3><field name="asset_code" placeholder="Asset Code" attrs="{'required': [('is_asset','=',True)], 'invisible':[('is_asset','=', False)]}"/></h3>
+                </div>
+            </field>
+        </record>
+    
+    </data>
+</odoo>

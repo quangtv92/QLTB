@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+    
+    	<record id="asset_group_tree" model="ir.ui.view">
+			<field name="name">asset.group.tree</field>
+			<field name="model">asset.group</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Asset Group">
+					<field name="name" />
+				</tree>
+			</field>
+		</record>
+		
+		<record id="asset_group_form" model="ir.ui.view">
+			<field name="name">asset.group.form</field>
+			<field name="model">asset.group</field>
+			<field name="arch" type="xml">
+				<form string="Asset Group">
+					<sheet>
+						<group>
+							<group>
+								<field name="name"/>
+							</group>
+							<group>
+								<field name="active"/>
+							</group>
+						</group>
+						<separator string="Asset Details" />
+						<field name="line_ids">
+							<tree string="Asset Group Details" editable="bottom">
+								<field name="asset_categ_id" context="{'default_is_asset': 1}"/>
+								<field name="name"/>
+							</tree>
+						</field>
+						<separator string="Group Description" />
+						<field name="description"/>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+		<record id="asset_group_filter" model="ir.ui.view">
+            <field name="name">asset.group.filter</field>
+            <field name="model">asset.group</field>
+            <field name="arch" type="xml">
+            	<search string="Search Asset Group">
+	            	<field name="name"/>
+	            	<separator />
+	                <filter name="inactive" domain="[('active', '=', False)]" string="Inactive"/>
+                </search>
+            </field>
+        </record>
+		
+		<record id="asset_group_action" model="ir.actions.act_window">
+			<field name="name">Asset Groups</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">asset.group</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="context">{}</field>
+		</record>
+		
+		<menuitem id="menu_asset_group" action="asset_group_action"
+			parent="menu_asset_config_root" groups="base.group_asset_user"
+			sequence="3" />
+    
+    </data>
+</odoo>
