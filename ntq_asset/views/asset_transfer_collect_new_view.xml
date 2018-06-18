@@ -21,8 +21,8 @@
         					context="{'collect': True}"
         					/>
        					<button name="create_move" string="Generate Entry" type="object" class="oe_highlight"
-        					groups="account.group_account_user"
-        					attrs="{'invisible': ['|', ('state','!=','done'), ('move_id','!=',False)]}"/>
+        					groups="account.group_account_user" invisible="1" />
+        					<!--attrs="{'invisible': ['|', ('state','!=','done'), ('move_id','!=',False)]}"/>-->
        					<button name="cancel_move" string="Cancel Entry" type="object"
         					groups="account.group_account_user"
         					attrs="{'invisible': [('move_id','=',False)]}"/>
