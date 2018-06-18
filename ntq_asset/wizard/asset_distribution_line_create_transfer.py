@@ -143,7 +143,7 @@ class AssetDistributionLineCreateTransfer(models.TransientModel):
     reason = fields.Text(string="Reason")
     journal_id = fields.Many2one('account.journal', string="Transfer Journal", required=True)
     memo = fields.Char(string="Memo")
-    it_check = fields.Boolean(string="Require IT Check", default=True)
+    it_check = fields.Boolean(string="Require IT Check", default=False)
     assign_to = fields.Many2one('hr.employee', string="Assign To")
     type = fields.Selection([
         ('new', 'New'),
