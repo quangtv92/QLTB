@@ -11,7 +11,7 @@ class AssetTransferLine(models.Model):
     transfer_id = fields.Many2one('asset.transfer', string="Asset Transfer")
     distribution_id = fields.Many2one('asset.distribution', string="Request")
     name = fields.Char(string="Asset Transfer", related='transfer_id.name', readonly=True)
-    asset_code = fields.Many2one('product.template', required=True, string="Asset Code", store=True)    
+    asset_code = fields.Many2one('product.template', required=True, string="Asset Code", store=True)
     asset_id = fields.Many2one('product.product', string="Asset", compute='_compute_asset_id', store=True)    
     product_tmpl_id = fields.Many2one('product.template', string="Product Template", related='asset_id.product_tmpl_id',store=True)
     child_id = fields.Many2many('product.template', string="Child Assets")

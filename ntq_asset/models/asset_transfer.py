@@ -51,7 +51,7 @@ class AssetTransfer(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('transfer_confirm', 'Confirmed by Transfer'),
-        ('it_confirm', 'Confirmed by IT'),
+        # ('it_confirm', 'Confirmed by IT'),
         ('done', 'Done'),
         ('reject', 'Rejected'),
         ('cancel', 'Canceled'),
@@ -360,7 +360,7 @@ class AssetTransfer(models.Model):
             distribution = self.env['asset.distribution'].browse(distribution_id)
             for line in distribution.line_ids:
                 lines.append((0, 0, {
-                    'asset_id': line.asset_id.id,
+                    'asset_code': line.asset_id.id,
                     'child_id': [(6, 0, [x.id for x in line.child_id])],
                     'description': line.name,
                     'distribution_id': self.distribution_id.id,
