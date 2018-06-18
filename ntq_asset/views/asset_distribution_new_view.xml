@@ -42,23 +42,11 @@
 						<button name="submit" states="draft" string="Submit to Manager"
 							type="object" class="oe_highlight" groups="base.group_user" />
 						<button name="approve" string="Approve" type="object"
-							class="oe_highlight" groups="project.group_project_pm"
-							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','pm')]}" />
+							class="oe_highlight" groups="base.group_asset_manager"
+							attrs="{'invisible': [('state','!=','waiting')]}" />
 						<button name="%(asset_distribution_reject_action)d" string="Reject"
-							type="action" groups="project.group_project_pm"
-							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','pm')]}" />
-						<button name="approve" string="Approve" type="object"
-							class="oe_highlight" groups="base.group_asset_em"
-							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','em')]}" />
-						<button name="%(asset_distribution_reject_action)d" string="Reject"
-							type="action" groups="base.group_asset_em"
-							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','em')]}" />
-						<button name="approve" string="Approve" type="object"
-							class="oe_highlight" groups="base.group_asset_dm"
-							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','dm')]}" />
-						<button name="%(asset_distribution_reject_action)d" string="Reject"
-							type="action" groups="base.group_asset_dm"
-							attrs="{'invisible': ['|',('state','!=','waiting'),('approve_status','!=','dm')]}" />
+							type="action" groups="base.group_asset_manager"
+							attrs="{'invisible': [('state','!=','waiting')]}" />
 						<button name="confirm" states="approve" string="Confirm"
 							type="object" class="oe_highlight" groups="base.group_asset_user" />
 						<button name="%(asset_distribution_reject_action)d" states="approve"

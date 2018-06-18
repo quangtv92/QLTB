@@ -39,8 +39,7 @@ class AssetTransfer(models.Model):
         ('customer', 'Customer'),
     ], string="Used By", readonly=True, states={'draft': [('readonly', False)]})
     employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True, states={'draft': [('readonly', False)]})
-    project_id = fields.Many2one('project.project', string="Project", domain=[('state','in',['draft','open'])],
-        readonly=True, states={'draft': [('readonly', False)]})
+    project_id = fields.Many2one('project.project', string="Project", readonly=True, states={'draft': [('readonly', False)]})
     department_id = fields.Many2one('hr.department', string="Department", readonly=True, states={'draft': [('readonly', False)]})
     partner_id = fields.Many2one('res.partner', string="Customer", domain=[('customer','=',True)], readonly=True, states={'draft': [('readonly', False)]})
     distribution_id = fields.Many2one('asset.distribution', string="Request", readonly=True, states={'draft': [('readonly', False)]})
