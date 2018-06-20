@@ -3,29 +3,18 @@
 <data noupdate="0">
 
     <!-- User Group -->
-    
-    <record id="base.group_asset_it" model="res.groups">
-        <field name="name">IT (Check Transfer Asset)</field>
-        <field name="category_id" ref="base.module_category_extra"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-    </record>
-    
-    <record id="base.group_asset_em" model="res.groups">
-        <field name="name">Employee Manager</field>
+
+
+    <record id="base.group_asset_create_transfer_only" model="res.groups">
+        <field name="name">Asset Create Transfer Only</field>
         <field name="category_id" ref="module_category_asset"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <!--<field name="implied_ids" eval="[(4, ref('base.group_asset_dm'))]"/>-->
     </record>
-    
-    <record id="base.group_asset_dm" model="res.groups">
-        <field name="name">Department Manager</field>
-        <field name="category_id" ref="module_category_asset"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_asset_em'))]"/>
-    </record>
-    
+
     <record id="base.group_asset_user" model="res.groups">
         <field name="name">Asset User</field>
         <field name="category_id" ref="module_category_asset"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_asset_dm'))]"/>
+        <!--<field name="implied_ids" eval="[(4, ref('base.group_asset_dm'))]"/>-->
     </record>
     
     <record id="base.group_asset_manager" model="res.groups">

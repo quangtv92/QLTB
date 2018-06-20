@@ -13,7 +13,7 @@ class AssetCategory(models.Model):
     
     is_asset = fields.Boolean(string="Is Asset Category?")
     code = fields.Many2one('ir.sequence', string='Code', required=True, default=_default_code)
-    description = fields.Text(string="Description")
+    description = fields.Text(string="Ghi chú")
     
     _sql_constraints = [
         ('name_unique',

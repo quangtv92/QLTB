@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-    
+
     	<record id="asset_category_inherit_form" model="ir.ui.view">
 			<field name="name">asset.category.inherit.form</field>
 			<field name="model">product.category</field>
@@ -10,21 +10,23 @@
 				<group name="first" position="replace">
 					<group name="first" string="General Information">
 						<group>
-							<field name="parent_id" 
+							<field name="parent_id"
 								context="{'default_is_asset': is_asset}"
 								domain="[('is_asset','=',is_asset)]"/>
                         	<field name="type"/>
 						</group>
 						<group>
 							<field name="is_asset" invisible="1"/>
-							<field name="code" attrs="{'invisible': [('is_asset','=',False)]}"/>
+							<!--<field name="code" attrs="{'invisible': [('is_asset','=',False)]}" >-->
+							<field name="code" invisible="1"/>
 							<field name="description"/>
 						</group>
 					</group>
 				</group>
+
 			</field>
 		</record>
-		
+
 		<record id="asset_category_inherit_search" model="ir.ui.view">
 			<field name="name">asset.category.inherit.search</field>
 			<field name="model">product.category</field>
@@ -39,7 +41,7 @@
 				</field>
 			</field>
 		</record>
-		
+
 		<record id="asset_category_hierarchy_tree" model="ir.ui.view">
             <field name="name">asset.category.hierarchy.tree</field>
             <field name="model">product.category</field>
@@ -51,9 +53,9 @@
                 </tree>
             </field>
         </record>
-		
+
 		<record id="asset_category_action" model="ir.actions.act_window">
-			<field name="name">Asset Categories</field>
+			<field name="name">Phân loại thiết bị</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="res_model">product.category</field>
 			<field name="view_type">form</field>
@@ -66,18 +68,19 @@
 		<menuitem id="menu_asset_category" action="asset_category_action"
 			parent="menu_asset_config_root" groups="base.group_asset_user,account.group_account_user"
 			sequence="1" />
-			
+
 		<record id="asset_category_hierarchy_action" model="ir.actions.act_window">
-            <field name="name">Asset Categories Hierarchy</field>
+            <field name="name">Phân cấp danh mục thiết bị</field>
             <field name="res_model">product.category</field>
             <field name="view_type">tree</field>
             <field name="domain">[('parent_id','=',False),('is_asset','=',True)]</field>
             <field name="view_id" ref="asset_category_hierarchy_tree"/>
         </record>
-        
-        <menuitem id="menu_asset_category_hierarchy" action="asset_category_hierarchy_action"
-			parent="menu_asset_config_root" groups="base.group_asset_user,account.group_account_user"
-			sequence="2" />
-    
+
+        <!--<menuitem id="menu_asset_category_hierarchy" action="asset_category_hierarchy_action"-->
+			<!--parent="menu_asset_root" groups="base.group_asset_user,account.group_account_user"-->
+			<!--sequence="2" />-->
+
+
     </data>
 </odoo>

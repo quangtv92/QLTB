@@ -10,8 +10,8 @@
 					<header>
 						<button name="transfer_confirm" states="draft" string="Transfer Confirm" type="object" class="oe_highlight"
         					groups="base.group_user"/>
-        				<button name="it_confirm" string="IT Confirm" type="object" class="oe_highlight"
-        					groups="base.group_asset_it"
+        				<button name="it_confirm" string="Confirm" type="object" class="oe_highlight"
+							groups="base.group_asset_user"
         					attrs="{'invisible': ['|', ('state','!=','transfer_confirm'),('it_check','=',False)]}"/>
         				<button name="%(asset_transfer_reject_action)d" string="Reject" type="action" groups="base.group_asset_it"
         					attrs="{'invisible': ['|', ('state','!=','transfer_confirm'),('it_check','=',False)]}"/>
@@ -118,10 +118,10 @@
 												<field name="categ_id" invisible="1" />
 												<field name="origin" invisible="1"/>
 												<field name="own_by" invisible="1" />
-												<field name="employee_id" string="Last used by"/>
+												<field name="employee_id" string="Người xử dụng cuối"/>
 												<field name="project_id" />
 												<field name="department_id" />
-												<field name="available_date" />
+												<field name="available_date" string="Thời gian hiệu lực"/>
 												<field name="value" groups="base.group_asset_user,account.group_account_user" invisible="1" />
 												<field name="state" />
 		                        			</tree>
@@ -142,7 +142,7 @@
 		</record>
 		
 		<record id="asset_transfer_collecting_action" model="ir.actions.act_window">
-			<field name="name">Collecting</field>
+			<field name="name">Thu hồi thiết bị</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="res_model">asset.transfer</field>
 			<field name="view_type">form</field>

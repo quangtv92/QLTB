@@ -8,11 +8,11 @@
 	        <field name="name">asset.transfer.reject.wizard.form</field>
 	        <field name="model">asset.transfer.reject.wizard</field>
 	        <field name="arch" type="xml">
-	            <form string="Reject Asset Transfer">	                
+	            <form string="Hủy bỏ cấp phát">
 	                <separator string="Reason"/>
 	                <field name="reason"/>	                
 	                <footer>
-	                    <button string='Reject' name="reject_transfer" type="object" class="oe_highlight"/>
+	                    <button string='Hủy yêu cầu' name="reject_transfer" type="object" class="oe_highlight"/>
 	                    or
 	                    <button string="Cancel" class="oe_link" special="cancel"/>
 	                </footer>

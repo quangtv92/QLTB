@@ -30,14 +30,14 @@
 			<field name="arch" type="xml">
 				<form string="Asset Transfer">
 					<header>
-						<button name="transfer_confirm" states="draft" string="Transfer Confirm" type="object" class="oe_highlight"
+						<button name="transfer_confirm" states="draft" string="Đồng ý cấp phát" type="object" class="oe_highlight"
         					groups="base.group_asset_user"/>
-        				<button name="it_confirm" string="IT Confirm" type="object" class="oe_highlight"
-        					groups="base.group_asset_it"
+        				<button name="it_confirm" string="Đồng ý" type="object" class="oe_highlight"
+							groups="base.group_asset_user"
         					attrs="{'invisible': ['|', ('state','!=','transfer_confirm'),('it_check','=',False)]}"/>
-        				<button name="%(asset_transfer_reject_action)d" string="Reject" type="action" groups="base.group_asset_it"
+        				<button name="%(asset_transfer_reject_action)d" string="Hủy bỏ" type="action" groups="base.group_asset_it"
         					attrs="{'invisible': ['|', ('state','!=','transfer_confirm'),('it_check','=',False)]}"/>
-        				<button name="done" string="Done" type="object" class="oe_highlight"
+        				<button name="done" string="Hoàn tất" type="object" class="oe_highlight"
         					groups="base.group_user"
         					attrs="{'invisible': ['|',('state','in',['draft','done','cancel','reject']),'&amp;',('state','=','transfer_confirm'),('it_check','=',True)]}"/>
        					<button name="create_move" string="Generate Entry" type="object" class="oe_highlight"
@@ -76,7 +76,7 @@
                         	<group>
                         		<field name="transfer_by"/>
                         		<field name="retrieve_by"/>
-                        		<label for="own_by" string="Used By"/>
+                        		<label for="own_by" string="Xử dụng cho"/>
                                 <div>
                                     <field name="own_by" required="True" class="oe_inline"/> - 
                                     <field name="employee_id" class="oe_inline"
@@ -147,10 +147,10 @@
 												<field name="categ_id" invisible="1" />
 												<field name="origin" invisible="1"/>
 												<field name="own_by" invisible="1" />
-												<field name="employee_id" string="Last used by"/>
+												<field name="employee_id" string="Người xử dụng cuối"/>
 												<field name="project_id" />
 												<field name="department_id" />
-												<field name="available_date" />
+												<field name="available_date" string="Thời gian hiệu lực"/>
 												<field name="value" groups="base.group_asset_user,account.group_account_user" invisible="1" />
 												<field name="state" />
 		                        			</tree>

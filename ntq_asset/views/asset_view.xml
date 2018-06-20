@@ -29,7 +29,7 @@
 					<field name="employee_id" />
 					<field name="project_id" />
 					<field name="department_id" />
-					<field name="available_date" />
+					<field name="available_date" string="Thời gian hiệu lực"/>
 					<field name="value" groups="base.group_asset_user,account.group_account_user" />
 					<field name="state" />
 				</tree>
@@ -81,12 +81,12 @@
                         </div>
                         <field name="image_medium" widget="image" class="oe_avatar"/>
                         <div class="oe_title">
-                            <label class="oe_edit_only" for="name" string="Asset Name"/>
+                            <label class="oe_edit_only" for="name" string="Tên Thiét bị"/>
                             <h1>
-                            	<field name="name" placeholder="Asset Name" class="oe_inline"/>&#x2063;&#x2063;&#x2063;&#x2063;
+                            	<field name="name" placeholder="Tên thiết bị" class="oe_inline"/>&#x2063;&#x2063;&#x2063;&#x2063;
                             	<field name="state" class="label label-success oe_inline" style="font-size:11px;" />
                             </h1>
-	                        <h3><field name="asset_code" placeholder="Asset Code" attrs="{'required': [('is_asset','=',True)]}"/></h3>
+	                        <h3><field name="asset_code" placeholder="Mã thiết bị" attrs="{'required': [('is_asset','=',True)]}"/></h3>
 							<div name="options" groups="base.group_user">
 								<div>
 									<field name="purchase_ok"/> <label for="purchase_ok"/>
@@ -98,13 +98,13 @@
                         	<page name="general_info" string="General Information">
                         		<group>
                         			<group>
-                        				<field name="type" string="Asset Type"/>
-                        				<field name="categ_id" string="Asset Category"
+                        				<field name="type" string="Asset Type" invisible="1"/>
+                        				<field name="categ_id" string="Loại TTB"
                         					domain="[('is_asset','=',True)]"
                         					context="{'default_is_asset': 1}"/>
                         				<field name="parent_id" attrs="{'invisible': [('state','not in',['new','available'])]}" 
                         					context="{'form_view_ref':'ntq_asset.asset_product_form','default_is_asset': 1}"/>
-                        				<label for="own_by" string="Owner" attrs="{'invisible': [('state','!=', 'use')]}"/>
+                        				<label for="own_by" string="Người dùng" attrs="{'invisible': [('state','!=', 'use')]}"/>
 	                                    <div attrs="{'invisible': [('state','!=', 'use')]}">
 	                                        <field name="own_by" class="oe_inline"/> - 
 	                                        <field name="employee_id" class="oe_inline"
@@ -120,33 +120,33 @@
                         			</group>
                         			<group>
                         				<field name="serial"/>
-                        				<field name="label"/>
+                        				<field name="label" invisible="1"/>
                         				<field name="warranty_reference"/>
-                        				<label for="warranty_from" string="Warranty Duration"/>
+                        				<label for="warranty_from" string="Thời gian bảo hành"/>
 	                                    <div>
 	                                        <field name="warranty_from" class="oe_inline"/> - <field name="warranty_to" class="oe_inline"/>
 	                                    </div>
-	                                    <field name="available_date" attrs="{'invisible': [('state','in', ['draft','cancel','lost','liquidated','disposed'])]}"/>
+	                                    <field name="available_date" string="Thời gian hiệu lực" attrs="{'invisible': [('state','in', ['draft','cancel','lost','liquidated','disposed'])]}"/>
                         			</group>
                         		</group>
                         		<!-- Note Child Asset -->
-                        		<separator string="Child Assets" />
+                        		<separator string="Thiết bị đi kèm" />
                         		<field name="child_id" context="{'form_view_ref':'ntq_asset.asset_form','default_is_asset': 1}" readonly="True">
-                        			<tree string="Child Assets">
+                        			<tree string="Thiết bị đi kèm">
                         				<field name="asset_code" />
 										<field name="name" />
 										<field name="categ_id" invisible="1" />
 										<field name="origin" invisible="1"/>
 										<field name="own_by" invisible="1" />
-										<field name="employee_id" string="Last used by"/>
+										<field name="employee_id" string="Người xử dụng cuối"/>
 										<field name="project_id" />
 										<field name="department_id" />
-										<field name="available_date" />
+										<field name="available_date" string="Thời gian hiệu lực"/>
 										<field name="value" groups="base.group_asset_user,account.group_account_user" invisible="1" />
 										<field name="state" />
                         			</tree>
                         		</field>
-                        		<separator string="Description" />
+                        		<separator string="Ghi chú" />
 								<field name="description"/>
                         	</page>
                         	<page name="origin" groups="base.group_asset_user,account.group_account_user" string="Origin" 
@@ -166,7 +166,7 @@
                         			</group>
                         		</group>
                         	</page>
-                        	<page name="accounting" string="Accounting" groups="account.group_account_user">
+                        	<page name="accounting" string="Accounting" groups="account.group_account_user" invisible="1">
                         		<group>
                         			<group>
                         				<field name="property_account_income_id"
@@ -185,16 +185,16 @@
                         			</group>
                         		</group>
                         	</page>
-                        	<page name="history" string="Transfer History">
+                        	<page name="history" string="Lịch sử phân bổ">
                         		<field name="history_ids">
-                        			<tree string="Asset History">
+                        			<tree string="Lịch sử phân bổ">
                         				<field name="date"/>
                         				<field name="transfer_date"/>
                         				<field name="retrieve_by"/>
                         				<field name="transfer_id"/>
                         				<field name="type"/>
                         			</tree>
-                        			<form string="Asset History">
+                        			<form string="Lịch sử phân bổ">
                         				<group>
                         					<group>
                         						<field name="date"/>
@@ -239,8 +239,8 @@
                         </div>
                         <field name="image_medium" widget="image" class="oe_avatar"/>
                         <div class="oe_title">
-                            <label class="oe_edit_only" for="name" string="Asset Name"/>
-                            <h1><field name="name" placeholder="Asset Name"/></h1>
+                            <label class="oe_edit_only" for="name" string="Tên thiết bị"/>
+                            <h1><field name="name" placeholder="Tên thiết bị"/></h1>
                         </div>
                         <notebook>
                         	<page name="general_info" string="General Information">
@@ -266,13 +266,13 @@
                         			<group>
                         				<field name="asset_code"/>
                         				<field name="serial"/>
-                        				<field name="label"/>
+                        				<field name="label" invisible="1"/>
                         				<field name="warranty_reference"/>
-                        				<label for="warranty_from" string="Warranty Duration"/>
+                        				<label for="warranty_from" string="Thời gian bảo hành"/>
 	                                    <div>
 	                                        <field name="warranty_from" class="oe_inline"/> - <field name="warranty_to" class="oe_inline"/>
 	                                    </div>
-	                                    <field name="available_date" attrs="{'invisible': [('state','in', ['draft','cancel','lost','liquidated','disposed'])]}"/>
+	                                    <field name="available_date" string="Thời gian hiệu lực" attrs="{'invisible': [('state','in', ['draft','cancel','lost','liquidated','disposed'])]}"/>
                         			</group>
                         		</group>
                         		<separator string="Description" />
@@ -295,7 +295,7 @@
                         			</group>
                         		</group>
                         	</page>
-                        	<page name="accounting" string="Accounting" groups="account.group_account_user">
+                        	<page name="accounting" string="Accounting" groups="account.group_account_user" invisible="1">
                         		<group>
                         			<group>
                         				<field name="property_account_income_id"
@@ -353,40 +353,41 @@
             <field name="model">product.template</field>
             <field name="arch" type="xml">
                 <search string="Asset">
-                	<field name="name" string="Product Name"/>
-                	<field name="asset_code" string="Asset Code"/>
-                	<field name="description"/>                	
-                	<field name="employee_id"/>
-                	<field name="partner_id" />
-                	<field name="project_id"/>
-                	<field name="department_id"/>
+                	<field name="name" string="Tên thiết bị"/>
+                	<field name="asset_code" string="Mã thiết bị"/>
+                	<!--<field name="description"/>                	-->
+                	<!--<field name="employee_id"/>-->
+                	<!--<field name="partner_id" />-->
+                	<!--<field name="project_id"/>-->
+                	<!--<field name="department_id"/>-->
                 	<field name="serial"/>
-                	<field name="label"/>
+
                 	<separator/>
-                	<filter name="can_be_sold" domain="[('sale_ok','=',True)]" string="Can be Sold" />
-                	<filter name="buy" domain="[('origin', '=', 'buy')]" string="Origin: Buy"/>
-                	<filter name="gift" domain="[('origin', '=', 'gift')]" string="Origin: Gift"/>
-                	<filter name="rent" domain="[('origin', '=', 'rent')]" string="Origin: Rent"/>
-                	<filter name="borrow" domain="[('origin', '=', 'borrow')]" string="Origin: Borrow"/>
-                	<filter name="draft" domain="[('state', '=', 'draft')]" string="Draft"/>
-                	<filter name="new" domain="[('state', '=', 'new')]" string="New"/>
-                	<filter name="book" domain="[('state', '=', 'book')]" string="Booked"/>
-                	<filter name="available" domain="[('state', '=', 'available')]" string="Available"/>
-                	<filter name="use" domain="[('state', '=', 'use')]" string="In Use"/>
-                	<filter name="repair" domain="[('state', '=', 'repair')]" string="Repair"/>
-                	<filter name="lost" domain="[('state', '=', 'lost')]" string="Lost"/>
-                	<filter name="liquidated" domain="[('state', '=', 'liquidated')]" string="Liquidated"/>
-                	<filter name="disposed" domain="[('state', '=', 'disposed')]" string="Disposed"/>
+                	<!--<filter name="can_be_sold" domain="[('sale_ok','=',True)]" string="Can be Sold" />-->
+                	<filter name="buy" domain="[('origin', '=', 'buy')]" string="Xuất xứ: Mua"/>
+                	<filter name="gift" domain="[('origin', '=', 'gift')]" string="Xuất xứ: Được tặng"/>
+                	<filter name="rent" domain="[('origin', '=', 'rent')]" string="Xuất xứ: Mướn"/>
+                	<filter name="borrow" domain="[('origin', '=', 'borrow')]" string="Xuất xứ: Thuê"/>
+
+                	<filter name="new" domain="[('state', '=', 'new')]" string="Thiết bị mới"/>
+					<filter name="available" domain="[('state', '=', 'available')]" string="Thiết bị đang sẵn sàng"/>
+                	<filter name="book" domain="[('state', '=', 'book')]" string="Thiết bị đã được đặt"/>
+
+                	<filter name="use" domain="[('state', '=', 'use')]" string="Thiết bị đang được xử dụng"/>
+                	<filter name="repair" domain="[('state', '=', 'repair')]" string="Thiết bị đang được sửa chữa"/>
+					<filter name="liquidated" domain="[('state', '=', 'liquidated')]" string="Hết hạn xử dụng"/>
+                	<filter name="lost" domain="[('state', '=', 'lost')]" string="Đã mất"/>
+					<filter name="draft" domain="[('state', '=', 'draft')]" string="Draft"/>
                 	<filter name="cancel" domain="[('state', '=', 'cancel')]" string="Canceled"/>
                 	<separator/>
-                	<filter name="inactive" domain="[('active', '=', False)]" string="Former Asset"/>
-                	<group expand="0" string="Group By">
-                		<filter name="group_by_categ_id" string="Asset Category" context="{'group_by':'categ_id'}"/>
-                		<filter name="group_by_parent_id" string="Parent" context="{'group_by':'parent_id'}"/>
-                		<filter name="group_by_employee_id" string="Employee" context="{'group_by':'employee_id'}"/>
-                		<filter name="group_by_project_id" string="Project" context="{'group_by':'project_id'}"/>
-                		<filter name="group_by_department_id" string="Department" context="{'group_by':'department_id'}"/>
-                		<filter name="group_by_state" string="Status" context="{'group_by':'state'}"/>
+                	<filter name="inactive" domain="[('active', '=', False)]" string="Thiết bị tồn kho"/>
+                	<group expand="0" string="Gom nhóm">
+                		<filter name="group_by_categ_id" string="Loại thiết bị" context="{'group_by':'categ_id'}"/>
+                		<!--<filter name="group_by_parent_id" string="Parent" context="{'group_by':'parent_id'}"/>-->
+                		<filter name="group_by_employee_id" string="Người dùng" context="{'group_by':'employee_id'}"/>
+                		<filter name="group_by_project_id" string="Dự án" context="{'group_by':'project_id'}"/>
+                		<filter name="group_by_department_id" string="Phòng ban" context="{'group_by':'department_id'}"/>
+                		<filter name="group_by_state" string="Trạng thái" context="{'group_by':'state'}"/>
                 	</group>
                 </search>
             </field>
@@ -435,7 +436,7 @@
         </record>
 		
 		<record id="asset_action" model="ir.actions.act_window">
-			<field name="name">Assets</field>
+			<field name="name">Danh Mục Thiết Bị</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="res_model">product.template</field>
 			<field name="view_type">form</field>

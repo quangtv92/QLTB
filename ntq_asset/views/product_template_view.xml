@@ -12,7 +12,7 @@
                         <field name="is_asset"/>
                         <label for="is_asset"/>
                     </div>
-                    <h3><field name="asset_code" placeholder="Asset Code" attrs="{'required': [('is_asset','=',True)], 'invisible':[('is_asset','=', False)]}"/></h3>
+                    <h3><field name="asset_code" placeholder="Mã thiết bị" attrs="{'required': [('is_asset','=',True)], 'invisible':[('is_asset','=', False)]}"/></h3>
                 </div>
             </field>
         </record>

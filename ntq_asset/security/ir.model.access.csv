@@ -25,3 +25,4 @@ access_stock_warehouse_orderpoint_employee,stock.warehouse.orderpoint.employee,s
 access_asset_history_employee,asset.history.employee,model_asset_history,base.group_user,1,1,1,1
 
 access_ir_sequence_manager,ir.sequence.manager,base.model_ir_sequence,base.group_asset_manager,1,1,1,1
+access_asset_user_create_transfer,asset.transfer.user_create_transfer,model_asset_distribution,base.group_asset_create_transfer_only,0,0,1,0

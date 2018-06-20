@@ -62,9 +62,9 @@
 			<field name="context">{}</field>
 		</record>
 		
-		<menuitem id="menu_asset_group" action="asset_group_action"
-			parent="menu_asset_config_root" groups="base.group_asset_user"
-			sequence="3" />
+		<!--<menuitem id="menu_asset_group" action="asset_group_action"-->
+			<!--parent="menu_asset_config_root" groups="base.group_asset_user"-->
+			<!--sequence="3" />-->
     
     </data>
 </odoo>

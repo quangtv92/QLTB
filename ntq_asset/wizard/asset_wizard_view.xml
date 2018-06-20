@@ -34,7 +34,7 @@
 	                            <field name="partner_id" class="oe_inline"
 	                                attrs="{'invisible': [('own_by','!=','customer')], 'required': [('own_by','=','customer')]}"/>
                             </div>
-                            <field name="available_date"/>
+                            <field name="available_date" string="Thời gian hiệu lực"/>
 	                	</group>
 	                </group>	                
 	                <footer>

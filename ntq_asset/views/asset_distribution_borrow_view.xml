@@ -148,10 +148,10 @@
 													<field name="categ_id" invisible="1" />
 													<field name="origin" invisible="1"/>
 													<field name="own_by" invisible="1" />
-													<field name="employee_id" string="Last used by"/>
+													<field name="employee_id" string="Người xử dụng cuối"/>
 													<field name="project_id" />
 													<field name="department_id" />
-													<field name="available_date" />
+													<field name="available_date" string="Thời gian hiệu lực"/>
 													<field name="value" groups="base.group_asset_user,account.group_account_user" invisible="1" />
 													<field name="state" />
 			                        			</tree>
@@ -187,7 +187,7 @@
 		</record>
 
 		<record id="asset_distribution_borrow_action" model="ir.actions.act_window">
-			<field name="name">Requests</field>
+			<field name="name">Gửi yêu cầu mượn TTB</field>
 			<field name="type">ir.actions.act_window</field>
 			<field name="res_model">asset.distribution</field>
 			<field name="view_type">form</field>

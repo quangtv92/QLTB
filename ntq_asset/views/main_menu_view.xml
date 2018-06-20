@@ -2,7 +2,7 @@
 <odoo>
     <data>
     
-    	<menuitem id="menu_asset_root" name="Assets" groups="base.group_user"
+    	<menuitem id="menu_asset_root" name="Quản lý trang thiết bị" groups="base.group_user"
 			icon="fa-user" sequence="76" />
 			
 		<menuitem id="menu_asset_config_root" name="Configuration"
@@ -10,11 +10,11 @@
 			sequence="100" />
 			
 		<menuitem id="menu_allocation_main" parent="menu_asset_root"
-			name="Assets Allocation" groups="base.group_user" icon="fa-user"
+			name="Phân bổ TTB" groups="base.group_user" icon="fa-user"
 			sequence="2" />
 
 		<menuitem id="menu_lending_main" parent="menu_asset_root"
-			name="Assets Lending" groups="base.group_user" icon="fa-user"
+			name="Cho mượn TTB" groups="base.group_user" icon="fa-user"
 			sequence="3" />
 			
 		<menuitem id="menu_allocation_agreement_main" parent="menu_allocation_main" name="Agreements" sequence="3" />

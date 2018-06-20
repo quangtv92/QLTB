@@ -12,7 +12,7 @@
 					<separator string="Reason" />
 					<field name="reason" />
 					<footer>
-						<button string='Reject' name="reject_distribution" type="object"
+						<button string='Hủy yêu cầu' name="reject_distribution" type="object"
 							class="oe_highlight" />
 						or
 						<button string="Cancel" class="oe_link" special="cancel" />
@@ -37,13 +37,13 @@
 			</field>
 			<field name="model">asset.distribution.create.transfer</field>
 			<field name="arch" type="xml">
-				<form string="Transfer Asset">
+				<form string="Cấp phát thiết bị">
 					<group>
 						<group>
 							<field name="type" invisible="1"/>
 							<field name="transfer_by" />
 							<field name="retrieve_by" />
-							<label for="own_by" string="Owner" />
+							<label for="own_by" string="Người dùng" />
 							<div>
 								<field name="own_by" class="oe_inline" />
 								-
@@ -96,7 +96,7 @@
 			</field>
 			<field name="model">asset.distribution.line.create.transfer</field>
 			<field name="arch" type="xml">
-				<form string="Transfer Asset">
+				<form string="Cấp phát thiết bị">
 					<group>
 						<group>
 							<field name="type" invisible="1" />
@@ -159,7 +159,7 @@
         <!-- Asset for Collecting -->
         
         <record id="asset_collecting_line_create_transfer_action" model="ir.actions.act_window">
-			<field name="name">Collect Assets</field>
+			<field name="name">Thu hồi thiết bị</field>
 			<field name="res_model">asset.distribution.line.create.transfer</field>
 			<field name="view_type">form</field>
 			<field name="view_mode">form</field>

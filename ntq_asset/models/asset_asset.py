@@ -16,31 +16,31 @@ class Asset(models.Model):
     def _get_default_uom_id(self):
         return self.env.ref('product.product_uom_day', False).id
 
-    is_asset = fields.Boolean(string="Can be Asset")
-    purchase_ok = fields.Boolean('Can be Purchased', default=True)
-    asset_code = fields.Char(string='Code', required=False, index=True)
-    serial = fields.Char(string="Serial", readonly=True, states={'draft': [('readonly', False)]})
-    description = fields.Text(string="Description")
+    is_asset = fields.Boolean(string="Là trang thiết bị")
+    purchase_ok = fields.Boolean('Có thể mua về', default=True)
+    asset_code = fields.Char(string='Mã thiết bị', required=False, index=True)
+    serial = fields.Char(string="Mã vạch", readonly=True, states={'draft': [('readonly', False)]})
+    description = fields.Text(string="Ghi chú")
     label = fields.Char(string="Label Name")
-    warranty_from = fields.Date(string="Warranty From", readonly=True, states={'draft': [('readonly', False)]})
-    warranty_to = fields.Date(string="Warranty To", readonly=True, states={'draft': [('readonly', False)]})
-    warranty_reference = fields.Char(string="Warranty Reference")
+    warranty_from = fields.Date(string="Bảo hành từ", readonly=True, states={'draft': [('readonly', False)]})
+    warranty_to = fields.Date(string="Bảo hành tới", readonly=True, states={'draft': [('readonly', False)]})
+    warranty_reference = fields.Char(string="Thông tin bảo hành")
     own_by = fields.Selection([
-        ('employee', 'Employee'),
-        ('project', 'Project'),
-        ('department', 'Department'),
-        ('company', 'Company'),
-        ('customer', 'Customer'),
-    ], string="Own By", readonly=True, states={'draft': [('readonly', False)]})
-    employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True, states={'draft': [('readonly', False)]})
-    project_id = fields.Many2one('project.project', string="Project", readonly=True, states={'draft': [('readonly', False)]})
-    department_id = fields.Many2one('hr.department', string="Department", readonly=True, states={'draft': [('readonly', False)]})
+        ('employee', 'Nhân Viên'),
+        ('project', 'Dự Án'),
+        ('department', 'Phòng Ban'),
+        ('company', 'Công Ty'),
+        ('customer', 'Người Dùng'),
+    ], string="Người dùng", readonly=True, states={'draft': [('readonly', False)]})
+    employee_id = fields.Many2one('hr.employee', string="Nhân viên", readonly=True, states={'draft': [('readonly', False)]})
+    project_id = fields.Many2one('project.project', string="Dự án", readonly=True, states={'draft': [('readonly', False)]})
+    department_id = fields.Many2one('hr.department', string="Phòng ban", readonly=True, states={'draft': [('readonly', False)]})
     partner_id = fields.Many2one('res.partner', string="Customer", domain=[('customer','=',True)], readonly=True, states={'draft': [('readonly', False)]})
     origin = fields.Selection([
-        ('buy', 'Buy'),
-        ('gift', 'Gift'),
-        ('rent', 'Rent'),
-        ('borrow', 'Borrow'),
+        ('buy', 'Mua'),
+        ('gift', 'Được tặng'),
+        ('rent', 'Thuê'),
+        ('borrow', 'Mượn'),
     ], sring="Origin", readonly=True, states={'draft': [('readonly', False)]})
     origin_partner_id = fields.Many2one('res.partner', string="Partner", readonly=True, states={'draft': [('readonly', False)]})
     origin_date = fields.Date(string="Date", readonly=True, states={'draft': [('readonly', False)]})
@@ -55,18 +55,18 @@ class Asset(models.Model):
     value = fields.Float(string="Value", required=True, default=0, digits=(16,0))
     account_asset_id = fields.Many2one('account.asset.asset', string="Accounting Asset")
     state = fields.Selection([
-        ('draft', 'Draft'),
-        ('new', 'New'),
-        ('available', 'Available'),
-        ('book', 'Booked'),
-        ('use', 'In Use'),
-        ('fail', 'Fail'),        
-        ('repair', 'Repair'),
-        ('lost', 'Lost'),
-        ('liquidated', 'Liquidated'),
+        ('draft', 'Nháp'),
+        ('new', 'Mới'),
+        ('available', 'Đang sẵn sàng'),
+        ('book', 'Đã được đăng ký'),
+        ('use', 'Đang được xử dụng'),
+        ('fail', 'Hỏng'),
+        ('repair', 'Sửa chữa'),
+        ('lost', 'Mất'),
+        ('liquidated', 'Thanh lý'),
         ('disposed', 'Disposed'),
         ('cancel', 'Canceled')
-    ], string="Status", index=True, readonly=True, track_visibility='onchange', copy=False, default='draft', required=True)
+    ], string="Trạng thái", index=True, readonly=True, track_visibility='onchange', copy=False, default='draft', required=True)
     categ_id = fields.Many2one('product.category','Internal Category', required=True, change_default=True, domain="[('type','=','normal')]",
         default=_get_default_category_id,help="Select category for the current product")
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.user.company_id)
@@ -80,7 +80,6 @@ class Asset(models.Model):
     sale_ok = fields.Boolean(
         'Can be Sold', default=False,
         help="Specify if the product can be selected in a sales order line.")
-    purchase_ok = fields.Boolean('Can be Purchased', default=False)
     uom_id = fields.Many2one(
         'product.uom', 'Unit of Measure',
         default=_get_default_uom_id, required=True,

@@ -27,20 +27,20 @@ class AssetTransfer(models.Model):
         return employee
     
     name = fields.Char(string="Reference", required=True, readonly=True, default='/')
-    date = fields.Date(string="Transfer Date", required=True, default=fields.Date.today, readonly=True, states={'draft': [('readonly', False)]})
-    transfer_by = fields.Many2one('hr.employee', string="Transfer By", required=True, default=_default_transfer_by,
+    date = fields.Date(string="Ngày Cấp Phát", required=True, default=fields.Date.today, readonly=True, states={'draft': [('readonly', False)]})
+    transfer_by = fields.Many2one('hr.employee', string="Người cấp phát", required=True, default=_default_transfer_by,
         readonly=True, states={'draft': [('readonly', False)]}, auto_join=True)
-    retrieve_by = fields.Many2one('hr.employee', string="Received by", required=True, default=_default_retrieve_by,
+    retrieve_by = fields.Many2one('hr.employee', string="Người nhận", required=True, default=_default_retrieve_by,
         readonly=True, states={'draft': [('readonly', False)]}, auto_join=True)
     own_by = fields.Selection([
-        ('employee', 'Employee'),
-        ('project', 'Project'),
-        ('department', 'Department'),
-        ('customer', 'Customer'),
+        ('employee', 'Người Dùng'),
+        ('project', 'Dự án'),
+        ('department', 'Phòng Ban'),
+        ('customer', 'Nhân Viên'),
     ], string="Used By", readonly=True, states={'draft': [('readonly', False)]})
-    employee_id = fields.Many2one('hr.employee', string="Employee", readonly=True, states={'draft': [('readonly', False)]})
-    project_id = fields.Many2one('project.project', string="Project", readonly=True, states={'draft': [('readonly', False)]})
-    department_id = fields.Many2one('hr.department', string="Department", readonly=True, states={'draft': [('readonly', False)]})
+    employee_id = fields.Many2one('hr.employee', string="Nhân Viên", readonly=True, states={'draft': [('readonly', False)]})
+    project_id = fields.Many2one('project.project', string="Dự Án", readonly=True, states={'draft': [('readonly', False)]})
+    department_id = fields.Many2one('hr.department', string="Phòng Ban", readonly=True, states={'draft': [('readonly', False)]})
     partner_id = fields.Many2one('res.partner', string="Customer", domain=[('customer','=',True)], readonly=True, states={'draft': [('readonly', False)]})
     distribution_id = fields.Many2one('asset.distribution', string="Request", readonly=True, states={'draft': [('readonly', False)]})
     journal_id = fields.Many2one('account.journal', string="Transfer Journal", readonly=True, states={'draft': [('readonly', False)]})
@@ -50,7 +50,7 @@ class AssetTransfer(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'),
         ('transfer_confirm', 'Confirmed by Transfer'),
-        # ('it_confirm', 'Confirmed by IT'),
+        ('it_confirm', 'Confirmed'),
         ('done', 'Done'),
         ('reject', 'Rejected'),
         ('cancel', 'Canceled'),
@@ -212,17 +212,17 @@ class AssetTransfer(models.Model):
     
     @api.one
     def it_confirm(self):
-        if self.it_check:
-            if not self.assign_to.user_id or self.assign_to.user_id.id != self.env.user.id:
-                raise UserError(_("You have not enough permission to confirm this transfer."))
+        # if self.it_check:
+        #     if not self.assign_to.user_id or self.assign_to.user_id.id != self.env.user.id:
+        #         raise UserError(_("You have not enough permission to confirm this transfer."))
         self.write({'state': 'it_confirm'})
         self._send_notification(notification_type='confirm')
         
     @api.one
     def reject(self, reason):
-        if self.it_check:
-            if not self.assign_to.user_id or self.assign_to.user_id.id != self.env.user.id:
-                raise UserError(_("You have not enough permission to reject this transfer."))
+        # if self.it_check:
+        #     if not self.assign_to.user_id or self.assign_to.user_id.id != self.env.user.id:
+        #         raise UserError(_("You have not enough permission to reject this transfer."))
         self.write({'state': 'reject'})
         self._send_notification(notification_type='reject', reason=reason)
         self.line_ids.sudo().reject()
