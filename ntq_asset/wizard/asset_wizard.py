@@ -16,18 +16,18 @@ class asset_wizard(models.TransientModel):
         ('disposed', 'Disposed'),
     ], string="Wizard Type", required=True)
     origin = fields.Selection([
-        ('buy', 'Buy'),
-        ('gift', 'Gift'),
-        ('rent', 'Rent'),
-        ('borrow', 'Borrow'),
+        ('buy', 'Mua'),
+        ('gift', 'Được tặng'),
+        ('rent', 'Thuê'),
+        ('borrow', 'Mượn'),
     ], sring="Origin", required=True, default='buy')
-    purchase_order_id = fields.Many2one('purchase.order', string="Purchase Order", domain=[('state','in',['purchase','done'])])
-    purchase_date = fields.Date(string="Purchase Date")
-    request_by = fields.Many2one('hr.employee', string="Request By")
-    request_date = fields.Date(string="Request Date")
-    approve_request_by = fields.Many2one('hr.employee', string="Approve By")
+    purchase_order_id = fields.Many2one('purchase.order', string="Hóa đơn", domain=[('state','in',['purchase','done'])])
+    purchase_date = fields.Date(string="Ngày mua")
+    request_by = fields.Many2one('hr.employee', string="Yêu cầu bởi")
+    request_date = fields.Date(string="Ngày yêu cầu")
+    approve_request_by = fields.Many2one('hr.employee', string="Người chấp nhận")
     origin_partner_id = fields.Many2one('res.partner', string="Partner")
-    origin_date = fields.Date(string="Date")
+    origin_date = fields.Date(string="Ngày")
     available_date = fields.Date(string="Available Date")
     own_by = fields.Selection([
         ('employee', 'Employee'),
@@ -36,9 +36,9 @@ class asset_wizard(models.TransientModel):
         ('company', 'Company'),
         ('customer', 'Customer'),
     ], string="Own By", required=True, default='employee')
-    employee_id = fields.Many2one('hr.employee', string="Employee")
-    project_id = fields.Many2one('project.project', string="Project")
-    department_id = fields.Many2one('hr.department', string="Department")
+    employee_id = fields.Many2one('hr.employee', string="Nhân viên")
+    project_id = fields.Many2one('project.project', string="Dự án")
+    department_id = fields.Many2one('hr.department', string="Phòng ban")
     partner_id = fields.Many2one('res.partner', string="Customer", domain=[('customer','=',True)])
     lost_date = fields.Date(string="Lost Date", default=fields.Date.today)
     liquidated_date = fields.Date(string="Liquidated Date", default=fields.Date.today)
