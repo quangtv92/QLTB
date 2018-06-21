@@ -14,7 +14,7 @@
 			sequence="2" />
 
 		<menuitem id="menu_lending_main" parent="menu_asset_root"
-			name="Cho mượn TTB" groups="base.group_user" icon="fa-user"
+			name="Mượn trả TTB" groups="base.group_user" icon="fa-user"
 			sequence="3" />
 			
 		<menuitem id="menu_allocation_agreement_main" parent="menu_allocation_main" name="Agreements" sequence="3" />
