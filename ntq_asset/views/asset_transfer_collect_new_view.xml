@@ -13,7 +13,7 @@
         				<button name="it_confirm" string="Confirm" type="object" class="oe_highlight"
 							groups="base.group_asset_user"
         					attrs="{'invisible': ['|', ('state','!=','transfer_confirm'),('it_check','=',False)]}"/>
-        				<button name="%(asset_transfer_reject_action)d" string="Reject" type="action" groups="base.group_asset_it"
+        				<button name="%(asset_transfer_reject_action)d" string="Reject" type="action"
         					attrs="{'invisible': ['|', ('state','!=','transfer_confirm'),('it_check','=',False)]}"/>
         				<button name="done" string="Done" type="object" class="oe_highlight"
         					groups="base.group_asset_user"

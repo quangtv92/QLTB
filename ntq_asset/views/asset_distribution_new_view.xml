@@ -47,15 +47,14 @@
 						<button name="%(asset_distribution_reject_action)d" string="Reject"
 							type="action" groups="base.group_asset_manager"
 							attrs="{'invisible': [('state','!=','waiting')]}" />
-						<button name="confirm" states="approve" string="Confirm"
-							type="object" class="oe_highlight" groups="base.group_asset_user" />
-						<button name="%(asset_distribution_reject_action)d" states="approve"
-							string="Reject" type="action" groups="base.group_asset_user" />
-						<button name="check_available" states="waiting_avai"
-							string="Check Available" type="object" class="oe_highlight"
-							groups="base.group_asset_user" />
+						<!--<button name="confirm" states="approve" string="Confirm"-->
+							<!--type="object" class="oe_highlight" groups="base.group_asset_user" />-->
+
+						<!--<button name="check_available" states="waiting_avai"-->
+							<!--string="Check Available" type="object" class="oe_highlight"-->
+							<!--groups="base.group_asset_user" />-->
 						<button name="%(asset_distribution_create_transfer_action)d"
-							states="available" string="Transfer" type="action" class="oe_highlight"
+							states="approve" string="Transfer" type="action" class="oe_highlight"
 							context="{
         						'default_own_by': distrubute_to,
         						'default_employee_id': employee_id,
@@ -63,13 +62,15 @@
         						'default_department_id': department_id,
         						'default_type': type}"
 							groups="base.group_asset_user" />
+						<button name="%(asset_distribution_reject_action)d" states="approve"
+							string="Reject" type="action" groups="base.group_asset_user" />
 						<button name="cancel"
 							states="waiting,approve,reject,waiting_avai,available" string="Cancel"
 							type="object" groups="base.group_asset_manager" />
 						<button name="set_draft" states="cancel,reject" string="Set to Draft"
 							type="object" class="oe_highlight" groups="base.group_user" />
 						<field name="state" widget="statusbar"
-							statusbar_visible="draft,waiting,approve,waiting_avai,available,transfer" />
+							statusbar_visible="draft,waiting,approve,transfer" />
 					</header>
 					<sheet>
 						<div class="oe_button_box" name="button_box">
